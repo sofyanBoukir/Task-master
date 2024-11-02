@@ -4,9 +4,13 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StudentController;
 
-Route::get("/",[LoginController::class,"show"]);
+Route::get("/",[LoginController::class,"show"])
+->name("login.show");
 Route::post("/login",[LoginController::class,"login"])
 ->name("login.login");
+Route::get("/logout",[LoginController::class,"logout"])
+->name("login.logout");
+
 
 
 Route::resource('student/profile', StudentController::class)->names([

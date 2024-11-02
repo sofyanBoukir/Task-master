@@ -9,6 +9,12 @@
   <div class="w-[30%] rounded-lg border border-black px-6 py-8 mx-auto mt-20 dark:bg-gray-800 dark:border-gray-700 text-white">
     <h1 class="font-semibold text-2xl mb-4">Login to your dashboard</h1> 
 
+      @if (session("success"))
+        <x-alert>
+          {{session("success")}}
+        </x-alert>
+      @endif
+
     <form action="{{route('login.login')}}" method="POST">
         @csrf
         <label>Username</label>

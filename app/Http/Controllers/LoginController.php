@@ -33,4 +33,10 @@ class LoginController extends Controller
             ]);
         }
     }
+
+    public function logout(){
+        session()->flush();
+        Auth::logout();
+        return to_route("login.show")->with("success","You have been logged out!");
+    }
 }

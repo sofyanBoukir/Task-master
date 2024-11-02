@@ -12,4 +12,8 @@ class Student extends Model
     public function user(){
         return $this->hasOne(User::class);
     }
+
+    public function getImageAttribute($value){
+        return $value ? asset('storage/' . $value) : asset('storage/student/default_image.png');
+    }
 }
