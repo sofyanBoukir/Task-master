@@ -10,11 +10,17 @@
     <h1 class="font-semibold text-2xl mb-4">Login to your dashboard</h1> 
 
     <form action="{{route('login.login')}}" method="POST">
+        @csrf
         <label>Username</label>
         <input type="text" 
         name="username" 
         class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
         placeholder="Ex: sof11_b"/>
+        <span class="text-sm text-red-500">
+            @error('username')
+                {{$message}}
+            @enderror
+        </span>
         <br>
         <br>
 
@@ -23,6 +29,11 @@
         name="password" 
         class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
         placeholder="......"/>
+        <span class="text-sm text-red-500">
+            @error('password')
+                {{$message}}
+            @enderror
+        </span>
         <a href="" class="text-blue-600 flex justify-end font-semibold text-sm hover:underline mt-2">Forgot Password?</a>
         <button class="bg-blue-700 text-white text-center py-2 rounded-lg w-[100%] mt-4 hover:bg-blue-600">Sign in</button>
     </form>
