@@ -24,7 +24,7 @@ class StudentFactory extends Factory
             'user_id' => User::factory(),
             'username' => fake()->unique()->userName(),
             'email' => fake()->unique()->email(),
-            'birth_date' => fake()->date($format = 'Y-m-d'),
+            'birth_date' => fake()->dateTimeBetween('2004-01-01', '2009-01-01')->format('Y-m-d'),
             'current_grade' => fake()->randomElement(["TC","1BAC","2BAC"]),
             'gender' => $gender,
             'adress' => fake()->address(),
