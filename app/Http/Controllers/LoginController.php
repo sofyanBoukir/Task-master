@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+
     public function show(){
         return view("login");
     }
 
+    
     public function login(Request $request){
         
         $username = $request->username;
@@ -25,13 +26,22 @@ class LoginController extends Controller
         $credentials = ["username" => $username,"password" => $password];
 
         if(Auth::attempt($credentials)){
-            $student = Auth::user();
-            return to_route("student.profile.edit",$student->id);
-        }else{
-            return back()->withErrors([
-                "username" => "username Or password incorrect!",
-            ]);
+            $user = Auth::user();
+
+            if($user->role === 'admin'){
+                
+                return to_route("admin.students.index");
+            }
+            else if($user->role === 'student'){
+                return to_route("student.profile.edit",$user->id);
+            }
+
+            return abort(404);
         }
+
+        return back()->withErrors([
+            "username" => "username Or password incorrect!",
+        ]);
     }
 
     public function logout(){

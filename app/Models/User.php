@@ -3,9 +3,10 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Admin;
+use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
@@ -14,6 +15,10 @@ class User extends Authenticatable
 
     public function student(){
         return $this->belongsTo(Student::class);
+    }
+
+    public function admin(){
+        return $this->belongsTo(Admin::class);
     }
     /**
      * The attributes that are mass assignable.
