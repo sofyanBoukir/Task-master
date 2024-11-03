@@ -18,20 +18,15 @@
           @csrf  
           <labe class="mb-1">Profile photo</label>
           <div class="flex gap-1 items-center">
-            <div class="">
-              <img src="" class="rounded-full w-11 h-11"/>
+            <div class="bg-blue-300 rounded-full w-11 h-11">
+              {{-- <img src="" class="rounded-full w-11 h-11"/> --}}
             </div>
             <div class="">
-              <label for="file-upload" class="bg-blue-500 rounded-sm px-2 py-1 cursor-pointer hover:bg-blue-400">Change photo</label>
+              <label for="file-upload" class="bg-blue-500 rounded-sm px-2 py-1 cursor-pointer hover:bg-blue-400">Upload photo</label>
               <input type="file" id="file-upload" class="hidden" name="image"/>
               <span>PNG,GPG,GPEG max:10mb</span>
             </div>
           </div>
-          <span class="text-sm text-red-500">
-            @error('image')
-              {{$message}}
-            @enderror
-          </span>
   
          <div class="flex justify-between gap-10 mt-4">
             <div>
@@ -52,20 +47,39 @@
             </div>
             <div>
               <label class="w-[30%]">Gender</label>
-              <input type="text" 
-                  name="gender" 
-                  placeholder="male/female"
-                  class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
-                />
+              <br>
+                <input type="radio" value="male" name="gender" id="male"/> <label class="cursor-pointer" for="male">Male</label>
+                <input type="radio" value="female" name="gender" id="female" /> <label for="female" class="cursor-pointer">Female</label>
             </div>
+            
          </div>
           <div class="mt-4">
-            <label>Email</label>
-            <input type="email" 
-            name="email" 
-            placeholder="ex: ss@gmail.com"
-            class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
-            />
+            <div>
+              <label>Email</label>
+              <input type="email" 
+              name="email" 
+              placeholder="ex: ss@gmail.com"
+              class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
+              />
+            </div>
+            <div class="flex gap-8 mt-4">
+              <div>
+                <label>Password</label>
+                <input type="password" 
+                name="password" 
+                placeholder=".........."
+                class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
+                />
+              </div>
+              <div>
+                <label>Retype password</label>
+                <input type="password" 
+                name="password_confirmation" 
+                placeholder=".........."
+                class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
+                />
+              </div>
+            </div>
           </div>
           <div class="mt-4">
             <label>Adress</label>
@@ -85,11 +99,11 @@
             </div>
             <div>
               <label class="w-[30%]">Current grade</label>
-                <select class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700" name="grade">
+                <select name="grade" class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700" >
                     <option value="">Current Grade</option>
                     <option value="TC">TC</option>
-                    <option value="">1BAC</option>
-                    <option value="">2BAC</option>
+                    <option value="1BAC">1BAC</option>
+                    <option value="2BAC">2BAC</option>
                 </select>
             </div>
             <div>
@@ -112,6 +126,11 @@
                   />
             </div>
           </div>
+          @if ($errors->any())
+              @foreach ($errors->all() as $error)
+                 <span class="text-red-500">{{$error}}</span><br>
+              @endforeach
+          @endif
           <div class="flex justify-end gap-2">
             <input type="reset" 
             class="dark:bg-gray-900 px-4 cursor-pointer py-1.5 border border-gray-500 text-white rounded-lg"

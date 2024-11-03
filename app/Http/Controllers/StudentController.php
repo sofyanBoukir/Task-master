@@ -7,6 +7,7 @@ use App\Models\Admin;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
@@ -58,12 +59,64 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+
+        $full_name = $request->full_name;
+        $username = $request->username;
+        $email = $request->email;
+        $birth_date = $request->birth_date;
+        $current_grade = $request->grade;
+        $gender = $request->gender;
+        $adress = $request->adress;
+        $parent_name = $request->parent_name;
+        $parent_phone = $request->parent_phone;
+        $password = Hash::make($request->password);
+
         $request->validate([
             "full_name" => "required",
-            "username" => "required|unique",
-            ""
+            "username" => "required|unique:users|unique:students",
+            "gender" => "required",
+            "email" => "required|email|unique:students",
+            "adress" => "required",
+            "grade" => "required",
+            "birth_date" => "required|date",
+            "parent_phone" => "required",
+            "parent_name" => "required",
+            "password" => "required|min:4|confirmed",
+            "image" => "mimes:jpg,jpeg,png|max:10240"
         ]);
-        dd($request);
+
+        $image = NULL;
+
+        if($request->hasFile("image")){
+            $image = $request->file("image")->store("student","public");
+        }
+
+        $user = User::create([
+            "full_name" => $full_name,
+            "username" => $username,
+            "role" => "student",
+            "password" => $password,
+        ]);
+
+
+        $student = Student::create([
+            "full_name" => $full_name,
+            "username" => $username,
+            "gender" => $gender,
+            "user_id" => $user->id,
+            "email" => $email,
+            "adress" => $adress,
+            "current_grade" => $current_grade,
+            "birth_date" => $birth_date,
+            "parent_phone" => $parent_phone,
+            "parent_name" => $parent_name,
+            "image" => $image,
+            "password" => $password,
+        ]);
+
+        $user_id = Auth::id();
+        $admin = Admin::where('user_id', $user_id)->firstOrFail();
+        return to_route("student.profile.create",compact("admin"))->with("success","New student ". $student->full_name ." Added successfully!"); 
     }
 
     /**
