@@ -14,11 +14,11 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $students = Student::paginate(10);
+        $students = Student::paginate(6);
         $user_id = Auth::id();
         $admin = Admin::where('user_id', $user_id)->firstOrFail();
 
-        return view("admin.dashboard",compact('students','admin'));
+        return view("admin.student.students",compact('students','admin'));
     }
 
     /**
