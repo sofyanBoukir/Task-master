@@ -68,9 +68,12 @@
                 <td class="px-2 py-2 text-center">{{$student->email}}</td>
                 <td class="px-2 py-2 text-center">{{$student->parent_phone}}</td>
                 <td class="px-2 py-2 text-center flex gap-1">
-                  <form method="POST" action="{{route("admin.student.edit",$student->id)}}">
+                  <form method="POST" action="{{route("admin.student.delete",$student->id)}}">
+                    @csrf
                     @method("DELETE") 
-                    <button class="bg-red-700 text-white rounded-sm px-2 py-1 hover:bg-red-600"><a href="">Delete</a></button>
+                    <input type="submit"
+                     class="bg-red-700 text-white rounded-sm px-2 py-1 hover:bg-red-600 cursor-pointer" 
+                     value="Delete"/>
                   </form>
                   <button class="bg-green-700 text-white rounded-sm px-2 py-1 hover:bg-green-600"><a href="">Edit</a></button>
                 </td>

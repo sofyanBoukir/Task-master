@@ -76,9 +76,10 @@ class AdminController extends Controller
     }
 
     public function deleteStudent($id){
+
         $student = Student::findorfail($id);
         $user = User::findorfail($student->user_id);
-        
+
         $student->delete();
         $user->delete();
 
