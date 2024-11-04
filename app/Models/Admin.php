@@ -16,6 +16,6 @@ class Admin extends Model
     }
 
     public function getImageAttribute($value){
-        return $value?asset('storage/' . $value) : asset('storage/student/default_image.png');
+        return $value?asset('storage/' . $value) : asset('storage/admin/default_image.png');
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AdminProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\StudentController;
@@ -38,3 +39,6 @@ Route::post("admin/students/search",[StudentController::class,"search"])
 
 Route::delete("admin/student/{id}",[AdminController::class,"deleteStudent"])
 ->name("admin.student.delete");
+
+Route::get("admin/profile",[AdminProfileController::class,"index"])
+->name("admin.student.profile");
