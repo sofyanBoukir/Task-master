@@ -25,9 +25,16 @@ Route::resource('student/profile', StudentController::class)->names([
 
 Route::resource("admin/students",AdminController::class)->names([
     "index" => "admin.students.index",
-    'edit' => 'admin.student.edit',
-    'update' => 'admin.student.update',
 ]);
+
+Route::get("admin/student/{id}/edit",[AdminController::class,"editStudent"])
+->name("admin.student.edit");
+
+Route::patch("admin/student/{id}",[AdminController::class,"updateStudent"])
+->name("admin.student.update");
 
 Route::post("admin/students/search",[StudentController::class,"search"])
 ->name("students.search");
+
+Route::delete("admin/student/{id}",[AdminController::class,"deleteStudent"])
+->name("admin.student.delete");

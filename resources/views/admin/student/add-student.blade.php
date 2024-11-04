@@ -6,7 +6,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head> 
 <body class="bg-gray-50 dark:bg-gray-900 text-white">
-    <x-admin-side-bar profilePhoto='{{$admin->image}}' fullName='{{$admin->full_name}}'>
+    <x-admin-side-bar>
         <h1 class="text-white mt-5 text-3xl font-semibold">Add new Student</h1>
         <h1 class="text-white mt-1 font-semibold text-sm">Complete fieleds to add a Student</h1>
         @if (session("success"))

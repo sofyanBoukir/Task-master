@@ -55,8 +55,10 @@
                     <a href="{{route("login.logout")}}">Logout</a>
                 </div>
                 <div class="flex fixed bottom-5 items-center gap-1 text-sm font-semibold px-2 py-2 w-[15%]">
-                    <img src="{{asset($profilePhoto)}}" class="w-7 h-7 rounded-full"/>                   
-                    <a href="" class="">{{$fullName}}</a>
+                    <div class="bg-green-700 rounded-sm px-2 py-1">
+                        Student
+                    </div>
+                    <a href="" class="">{{auth()->user()->full_name}}</a>
                 </div>
             </div>
         </div>

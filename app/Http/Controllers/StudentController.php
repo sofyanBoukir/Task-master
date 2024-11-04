@@ -145,7 +145,7 @@ class StudentController extends Controller
     public function update(Request $request,$id)
     {
         $student = Student::findorfail($id);
-        $user = User::findorfail($id);
+        $user = User::findorfail($student->user_id);
 
         $request->validate([
             "image" => "mimes:jpg,jpeg,png|max:10240",

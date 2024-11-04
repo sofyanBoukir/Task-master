@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Admin;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -37,6 +39,51 @@ class AdminController extends Controller
         //
     }
 
+    public function editStudent($id){
+        $student = Student::findorfail($id);
+        return view("admin.student.edit-student",compact("student"));
+    }
+
+    public function updateStudent(Request $request,$id){
+        $student = Student::findorfail($id);
+        $user = User::findorfail($student->user_id);
+
+        $request->validate([
+            "image" => "mimes:jpg,png,jpeg|max:10240",
+        ]);
+
+        if($request->hasFile("image")){
+            $student->image = $request->file("image")->store("stduent","public");
+        }
+
+
+        $student->full_name = $request->full_name;
+        $student->birth_date = $request->birth_date;
+        $student->current_grade = $request->grade;
+        $student->adress = $request->adress;
+        $student->parent_name = $request->parent_name;
+        $student->parent_phone = $request->parent_phone;
+        $student->password = Hash::make($request->password);
+    
+
+        $user->full_name = $request->full_name;
+        $user->password = Hash::make($request->password);
+
+        $student->save();
+        $user->save();
+
+        return to_route("admin.student.edit",$student->id)->with("success","Data updated for " .$student->full_name);
+    }
+
+    public function deleteStudent($id){
+        $student = Student::findorfail($id);
+        $user = User::findorfail($student->user_id);
+        
+        $student->delete();
+        $user->delete();
+
+        return to_route("admin.students.index")->with("success","Student deleted successfully!");
+    }
     /**
      * Display the specified resource.
      */

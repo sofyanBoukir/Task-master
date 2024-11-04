@@ -7,17 +7,17 @@
 </head>
 <body class="bg-gray-50 dark:bg-gray-900">
 
-    <x-side-bar fullName='{{$student->full_name}}' profilePhoto='{{$student->image}}'>
-      <h1 class="text-white mt-5 text-3xl font-semibold">Hello, {{$student->full_name}}</h1>
-      <h1 class="text-white mt-1 font-semibold text-sm">Here is your personal informations</h1>
+    <x-admin-side-bar>
+      <h1 class="text-white mt-5 text-3xl font-semibold">Here you can Edit {{$student->full_name}} informations</h1>
+      <h1 class="text-white mt-1 font-semibold text-sm">You can edit only this informations</h1>
       @if (session("success"))
           <x-alert>
             {{session("success")}}
           </x-alert>
       @endif
-      <form class="text-white mt-6" method="POST" action="{{route("student.profile.update",$student->id)}}" enctype="multipart/form-data">
+      <form class="text-white mt-6" method="POST" action="{{route("admin.student.update",$student->id)}}" enctype="multipart/form-data">
         @csrf
-        @method("PUT")     
+        @method("PATCH")     
         <labe class="mb-1">Profile photo</label>
         <div class="flex gap-1 items-center">
           <div class="">
@@ -43,30 +43,7 @@
                 class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
                 value="{{$student->full_name}}"/>
           </div>
-          <div>
-            <label class="w-[30%]">Username</label>
-            <input type="text" 
-                name="username" 
-                class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
-                value="{{$student->username}}"
-                readonly/>
-          </div>
-          <div>
-            <label class="w-[30%]">Gender</label>
-            <input type="text" 
-                name="gender" 
-                class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
-                value="{{$student->gender}}"/>
-          </div>
        </div>
-        <div class="mt-4">
-          <label>Email</label>
-          <input type="email" 
-          name="email" 
-          class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
-          value="{{$student->email}}"
-          readonly/>
-        </div>
         <div class="mt-4">
           <label>Adress</label>
           <input type="text" 
@@ -82,12 +59,14 @@
                 class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
                 value="{{$student->birth_date}}"/>
           </div>
-          <div>
-            <label class="w-[30%]">Current grade</label>
-            <input type="text" 
-                name="current_grade" 
-                class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
-                value="{{$student->current_grade}}" readonly/>
+          <div class="">
+            <label class="w-[30%]">Current grade ({{$student->current_grade}})</label><br>
+            <select name="grade" class="rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700">
+                <option value={{$student->current_grade}}>Current grade</option>
+                <option value="TC">TC</option>
+                <option value="1BAC" selected>1BAC</option>
+                <option value="2BAC">1BAC</option>
+            </select>
           </div>
           <div>
             <label class="w-[30%]">Parent's phone number</label>
@@ -106,12 +85,14 @@
                 class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
                 value="{{$student->parent_name}}"/>
           </div>
+          <div>
+            <label class="">Password</label>
+            <input type="text" 
+                name="password" 
+                class="w-[100%] rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700"
+                placeholder="New password here"/>
+          </div>
         </div>
-        @if ($errors->any())
-            @foreach ($errors->all() as $error)
-                <span class="text-red-500">{{$error}}</span><br>
-            @endforeach
-        @endif
         <div class="flex justify-end gap-2">
           <input type="reset" 
           class="dark:bg-gray-900 px-4 cursor-pointer py-1.5 border border-gray-500 text-white rounded-lg"
@@ -121,6 +102,6 @@
           value="Save changes"/>
         </div>
       </form>
-    </x-side-bar>
+    </x-admin-side-bar>
 </body>
 </html>

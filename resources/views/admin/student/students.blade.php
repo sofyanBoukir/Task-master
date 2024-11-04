@@ -6,11 +6,16 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head> 
 <body class="bg-gray-50 dark:bg-gray-900 text-white">
-    <x-admin-side-bar profilePhoto='{{$admin->image}}' fullName='{{$admin->full_name}}'>
+    <x-admin-side-bar>
       <div class="mt-8">
         <h2 class="text-2xl font-semibold">Welcome admin, {{$admin->full_name}}</h2>
         <span class="text-sm font-semibold">Here you have full acess to students, edit,delete,add</span>
       </div>
+      @if (session("success"))
+          <x-alert>
+            {{session("success")}}
+          </x-alert>
+      @endif
       <div class="mt-8">
         <form action="{{route("students.search")}}" method="POST">
           @csrf
@@ -27,7 +32,7 @@
           class="rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700 focus:outline focus:outline-2 focus:outline-blue-500"/>
   
           <input type="text" 
-          placeholder="Search for student buy full name"
+          placeholder="Search student by name"
           name="student_name"
           class="rounded-lg py-2 px-3 borde-none outline-blue-700 mt-1 border-gray-500 dark:bg-gray-700 focus:outline focus:outline-2 focus:outline-blue-500"/>
   
@@ -62,9 +67,12 @@
                 <td class="px-2 py-2 text-center">{{$student->gender}}</td>
                 <td class="px-2 py-2 text-center">{{$student->email}}</td>
                 <td class="px-2 py-2 text-center">{{$student->parent_phone}}</td>
-                <td class="px-2 py-2 text-center">
-                  <button class="bg-red-700 text-white rounded-sm px-2 py-1 hover:bg-red-600">Delete</button>
-                  <button class="bg-green-700 text-white rounded-sm px-2 py-1 hover:bg-green-600">Edit</button>
+                <td class="px-2 py-2 text-center flex gap-1">
+                  <form method="POST" action="{{route("admin.student.edit",$student->id)}}">
+                    @method("DELETE") 
+                    <button class="bg-red-700 text-white rounded-sm px-2 py-1 hover:bg-red-600"><a href="">Delete</a></button>
+                  </form>
+                  <button class="bg-green-700 text-white rounded-sm px-2 py-1 hover:bg-green-600"><a href="">Edit</a></button>
                 </td>
               </tr>
             </tbody>
