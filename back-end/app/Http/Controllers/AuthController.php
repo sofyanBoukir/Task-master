@@ -23,7 +23,6 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $user = null;
 
         if($request->role === 'admin'){
             $user = Admin::where("username",$request->username)->first();
@@ -37,9 +36,8 @@ class AuthController extends Controller
 
         if(!$user || !Hash::check($request->password, $user->password)){
             return response()->json([
-                "error" => 403,
                 "message" => "username or password incorrect",
-            ]);
+            ],401);
         }
 
         return response()->json([
