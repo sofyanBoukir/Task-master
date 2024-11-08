@@ -1,6 +1,7 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { AcademicCapIcon,BriefcaseIcon,UserIcon } from '@heroicons/react/24/outline'
 import { useRef, useState } from "react"
+import { login } from "../../services/authService";
 
 export const SignIn = () => {
 
@@ -8,6 +9,8 @@ export const SignIn = () => {
   const password = useRef();
   const [formErrors,setFormErrors] = useState({});
   const [role,setRole] = useState('student');
+  const [invalidCredentials,setInvalidCredentials] = useState('');
+  const navigate = useNavigate();
 
   const errorHandling = () =>{
     let errors = {};
@@ -22,11 +25,39 @@ export const SignIn = () => {
     return Object.keys(errors).length === 0;
   }
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async (e) =>{
     e.preventDefault();
     
     if(errorHandling()){
       console.log("Data sended"); 
+      let data = {
+        username : username.current.value,
+        password : password.current.value,
+        role : role,
+      }
+
+      let response = await login(data);
+
+      if(response && response.status === 200){
+
+        localStorage.setItem('isAuthenticated','true');
+
+        if(response.data.role === 'student'){
+          localStorage.setItem('role','student');
+        }else if(response.data.role === 'teacher'){
+          localStorage.setItem('role','teacher');
+        }else if(response.data.role === 'admin'){
+          localStorage.setItem('role','admin');
+          navigate("/admin/dashboard");
+        }
+
+        const userId = response.data.user.id;        
+        localStorage.setItem('userId',userId);
+
+      }else{
+        setInvalidCredentials("Username or password incorrect");
+      }
+      
     }
   }
 
@@ -66,6 +97,9 @@ export const SignIn = () => {
                 <br></br>
                 {
                   formErrors.username && <span className="text-red-700 text-sm">{formErrors.username}</span>
+                }
+                {
+                  invalidCredentials && <span className="text-red-700 text-sm">{invalidCredentials}</span>
                 }
                 <br></br>
                 <label className="text-gray-600 font-semibold">Password</label>
