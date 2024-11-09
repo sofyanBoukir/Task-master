@@ -1,5 +1,4 @@
-import { Outlet } from "react-router-dom";
-import { SignIn } from "../pages/auth/SignIn";
+import { Navigate, Outlet } from "react-router-dom";
 
 const useAuth = () =>{
     const isAuthenticated = localStorage.getItem("isAuthenticated");
@@ -10,7 +9,7 @@ const useAuth = () =>{
 
 const AdminRoutes = () =>{
     const isAdminAuth = useAuth();
-    return isAdminAuth ? <Outlet /> : <SignIn />;
+    return isAdminAuth ? <Outlet /> : <Navigate to={"/"} />;
 }
 
 export default AdminRoutes;
