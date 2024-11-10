@@ -18,8 +18,8 @@ export const Profile = () => {
   return (
     <div className="px-4">
         <AdminHeader />
-        <div className="mt-4">
-          <h1 className="text-xl font-semibold">My profile</h1>
+        <div className="mt-3">
+          <h1 className="text-2xl font-semibold">My profile</h1>
           <div className="mt-2 bg-gray-100 border-2 rounded-lg px-4 py-3 flex gap-6 items-center">
             <div>
               <img src={image} className="h-24 w-24 rounded-full"/>

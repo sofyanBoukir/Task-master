@@ -5,7 +5,7 @@ export const AdminProfile = () => {
     <div>
       <div className="flex gap-5">
         <AdminSideBar />
-        <div className="lg:w-[80%] w-[100%]">
+        <div className="lg:w-[80%] w-[100%] lg:ml-[18%]">
             <Profile />
         </div>
       </div>

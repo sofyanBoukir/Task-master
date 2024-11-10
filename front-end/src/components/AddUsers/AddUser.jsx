@@ -1,6 +1,7 @@
 
-export const AddStudent = ({close}) => {
+export const AddStudent = ({user,close}) => {
     const closeModal = close;
+    
 return (
     <div>
         <div
@@ -11,7 +12,7 @@ return (
             <div className="relative dark:bg-gray-800 text-white rounded-lg shadow">
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibol">
-                    Add new Student
+                    Add new {user}
                 </h3>
                 <button
                     onClick={closeModal}
@@ -63,13 +64,32 @@ return (
 
                         <div className="flex justify-between">
                             <div className="w-[48%]">
-                                <label>Grade</label><br></br>
-                                <select className="dark:bg-gray-700 px-3 w-[100%] py-2 border border-gray-500 rounded-md">
-                                    <option value="">Select grade</option>
-                                    <option value="">Select grade</option>
-                                    <option value="">Select grade</option>
-                                    <option value="">Select grade</option>
-                                </select>
+                                {
+                                    user === 'Student' && (
+                                        <>
+                                            <label>Grade</label><br></br>
+                                            <select className="dark:bg-gray-700 px-3 w-[100%] py-2 border border-gray-500 rounded-md">
+                                                <option value="">Select grade</option>
+                                                <option value="">Select grade</option>
+                                                <option value="">Select grade</option>
+                                                <option value="">Select grade</option>
+                                            </select>
+                                        </>
+                                    )
+                                }
+                                {
+                                    user === 'Teacher' && (
+                                        <>
+                                            <label>Grade</label><br></br>
+                                            <select className="dark:bg-gray-700 px-3 w-[100%] py-2 border border-gray-500 rounded-md">
+                                                <option value="">Select Subject</option>
+                                                <option value="">Select Subject</option>
+                                                <option value="">Select Subject</option>
+                                                <option value="">Select Subject</option>
+                                            </select>
+                                        </>
+                                    )
+                                }
                             </div>
                             <div className="w-[48%]">
                                 <label>Gender</label><br></br>
@@ -78,9 +98,15 @@ return (
                             </div>
                         </div>
 
-                        <div>
-                            <label>Email adress</label><br></br>
-                            <input type="text" placeholder="Email adress" className="dark:bg-gray-700 px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                        <div className="flex justify-between">
+                            <div className="w-[48%]">
+                                <label>Salary</label><br></br>
+                                <input type="number" placeholder="Salary" className="dark:bg-gray-700 px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                            </div>
+                            <div className="w-[48%]">
+                                <label>Email adress</label><br></br>
+                                <input type="text" placeholder="Email adress" className="dark:bg-gray-700 px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                            </div>
                         </div>
 
                         <div className="flex justify-between">

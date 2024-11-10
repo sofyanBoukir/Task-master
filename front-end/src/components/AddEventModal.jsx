@@ -1,6 +1,7 @@
 
-export const EditStudent = ({close}) => {
+export const AddEvent = ({close}) => {
     const closeModal = close;
+    
 return (
     <div>
         <div
@@ -8,10 +9,10 @@ return (
             aria-hidden="true"
         >
             <div className="relative p-4 w-full max-w-2xl max-h-full">
-            <div className="relative dark:bg-gray-800 text-white rounded-lg shadow">
+            <div className="relative bg-white text-black rounded-lg shadow">
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibol">
-                    Edit student
+                    Add new Event
                 </h3>
                 <button
                     onClick={closeModal}
@@ -28,21 +29,24 @@ return (
 
                 <div className="p-4 md:p-5 space-y-4">
                     <form className="flex flex-col gap-3">
-
+                       
                         <div>
-                            <label>Username</label><br></br>
-                            <input type="text" placeholder="Username" className="dark:bg-gray-700 px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                            <label>Event title</label><br></br>
+                            <input type="text" placeholder="Max : 50 chars" className="dark:bg-white w-[100%] px-3 py-2 border border-gray-500 rounded-md"/>
                         </div>
+                        <div>
+                            <label>Event Date</label><br></br>
+                            <input type="date" placeholder="Email adress" className="dark:bg-white px-3 py-2 border w-[100%] border-gray-500 rounded-md"/>
+                        </div>
+                        <div>
+                            <label>Event image</label><br></br>
+                            <input type="file" placeholder="Email adress" className="dark:bg-white px-3 py-2 border w-[100%] border-gray-500 rounded-md"/>
+                        </div>
+                        <div>
+                            <label>Eevent description</label><br></br>
+                            <textarea placeholder="Max : 500 chars" className="dark:bg-white resize-none px-3 py-2 border w-[100%] border-gray-500 rounded-md">
 
-                        <div className="flex justify-between">
-                            <div className="w-[48%]">
-                                <label>Password</label><br></br>
-                                <input type="password" placeholder="Password" className="dark:bg-gray-700 px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
-                            </div>
-                            <div className="w-[48%]">
-                                <label>Confirm password</label><br></br>
-                                <input type="password" placeholder="Confirm password" className="dark:bg-gray-700 px-3 w-[100%] py-2 border border-gray-500 rounded-md"/>
-                            </div>
+                            </textarea>
                         </div>
                     </form>
                 </div>
@@ -53,7 +57,7 @@ return (
                         type="submit"
                         className="bg-green-700 text-white px-4 py-1 rounded-sm"
                     >
-                        Edit
+                        Add Event
                     </button>
                 </div>
             </div>

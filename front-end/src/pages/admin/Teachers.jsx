@@ -4,7 +4,7 @@ import { AdminSideBar } from "../../components/AdminSideBar"
 import { AddStudent } from "../../components/AddUsers/AddUser";
 import { EditStudent } from "../../components/EditUsers.jsx/EditUser";
 import { Delete } from "../../components/DeleteModal/Delete";
-export const Students = () => {
+export const Teachers = () => {
     const [addStudent,setAddStudent] = useState(false);
     const [editStudent,setEditStudent] = useState(false);
     const [deleteStudent,setDeleteStudent] = useState(false);
@@ -26,15 +26,15 @@ export const Students = () => {
             <AdminHeader />
             <div className="mt-3">
                 <div>
-                    <h1 className="text-2xl font-semibold">All students</h1>
+                    <h1 className="text-2xl font-semibold">All Teachers</h1>
                 </div>
                 <div className="mt-4 flex justify-between w-[100%]">
                     <div className="w-[60%] flex gap-2">
-                        <input type="text" placeholder="Search for students" className="bg-gray-100 font-semibold border-2 outline-none w-[60%] border-gray-400 px-3 py-2 rounded-md"/>
+                        <input type="text" placeholder="Search for Teachers" className="bg-gray-100 font-semibold border-2 outline-none w-[60%] border-gray-400 px-3 py-2 rounded-md"/>
                         <input type="text" placeholder="Search based on username" className="bg-gray-100 font-semibold border-2 outline-none w-[40%] border-gray-400 px-3 py-2 rounded-md"/>
                     </div>
                     <div>
-                        <button className="bg-blue-600 text-white px-3 py-2 rounded-md" onClick={openAddStudent}>Add Student</button>
+                        <button className="bg-blue-600 text-white px-3 py-2 rounded-md" onClick={openAddStudent}>Add Teacher</button>
                     </div>
                 </div>
                 <div className="mt-5 w-[100%]">
@@ -44,7 +44,7 @@ export const Students = () => {
                                 <th className="px-3 py-2 text-gray-600">#</th>
                                 <th className="px-3 py-2 text-gray-600">Full name</th>
                                 <th className=" px-3 py-2 text-gray-600">username</th>
-                                <th className="hidden md:table-cell px-3 py-2 text-gray-600">Grade</th>
+                                <th className="hidden md:table-cell px-3 py-2 text-gray-600">Subject</th>
                                 <th className="hidden md:table-cell px-3 py-2 text-gray-600">Adress</th>
                                 <th className="hidden md:table-cell px-3 py-2 text-gray-600">Gender</th>
                                 <th className="hidden md:table-cell px-3 py-2 text-gray-600">Date of birth</th>
@@ -72,17 +72,17 @@ export const Students = () => {
                 </div>
                 {
                     addStudent && (
-                        <AddStudent user={"Student"} close={closeAddStudent}/>
+                        <AddStudent user={"Teacher"} close={closeAddStudent}/>
                     )
                 }
                 {
                     editStudent && (
-                        <EditStudent user={"Student"} close={closeEditStudent}/>
+                        <EditStudent user={"Teacher"} close={closeEditStudent}/>
                     )
                 }
                 {
                     deleteStudent && (
-                        <Delete user={"Student"} close={closeDeleteStudent}/>
+                        <Delete user={"Teacher"} close={closeDeleteStudent}/>
                     )
                 }
             </div>

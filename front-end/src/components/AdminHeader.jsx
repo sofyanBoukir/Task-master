@@ -22,10 +22,10 @@ export const AdminHeader = () => {
                 <Link className="py-2 text-lg font-semibold" to={"/admin/dashboard"}>Dashboard</Link><br></br>
                 <Link className="py-2 text-lg font-semibold" to={"/admin/profile"}>Pofile</Link><br></br>
                 <Link className="py-2 text-lg font-semibold" to={"/admin/students"}>Students</Link><br></br>
-                <Link className="py-2 text-lg font-semibold">Teachers</Link><br></br>
-                <Link className="py-2 text-lg font-semibold">Announcement</Link><br></br>
-                <Link className="py-2 text-lg font-semibold">Events</Link><br></br>
-                <Link className="py-2 text-lg font-semibold">Notifiications</Link><br></br>
+                <Link className="py-2 text-lg font-semibold" to={"/admin/teachers"}>Teachers</Link><br></br>
+                <Link className="py-2 text-lg font-semibold" to={"/admin/announcement"}>Announcement</Link><br></br>
+                <Link className="py-2 text-lg font-semibold" to={"/admin/events"}>Events</Link><br></br>
+                <Link className="py-2 text-lg font-semibold" to={"/admin/notifications"}>Notifiications</Link><br></br>
                 <Link className="py-2 text-lg font-semibold">Our team</Link><br></br>
                 <Link className="py-2 text-lg font-semibold">Logout</Link><br></br>               
             </MenuList>

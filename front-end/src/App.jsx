@@ -9,6 +9,10 @@ import { TeacherDashboard } from "./pages/teacher/TeacherDashboard"
 import { StudentDashboard } from "./pages/student/StudentDashboard"
 import { AdminProfile } from "./pages/admin/AdminProfile"
 import { Students } from "./pages/admin/Students"
+import { Teachers } from "./pages/admin/Teachers"
+import { Announcement } from "./pages/admin/Announcement"
+import { Events } from "./pages/admin/Events"
+import { Notifications } from "./pages/admin/Notifications"
 
 export const App = () => {
   return (
@@ -18,6 +22,10 @@ export const App = () => {
             <Route path="/admin/dashboard" element={<AdminDashboard />} />   
             <Route path="/admin/profile" element={<AdminProfile />} />
             <Route path="/admin/students" element={<Students />} />
+            <Route path="/admin/teachers" element={<Teachers />} />
+            <Route path="admin/announcement" element={<Announcement />} />
+            <Route path="admin/events" element={<Events />} />
+            <Route path="admin/notifications" element={<Notifications />} />
           </Route>
 
           <Route element={<TeacherRoutes />}>
