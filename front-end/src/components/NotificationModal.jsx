@@ -5,7 +5,7 @@ export const Notification = ({close}) => {
 return (
     <div>
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50"
+            className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-80"
             aria-hidden="true"
         >
             <div className="relative p-4 w-full max-w-2xl max-h-full">

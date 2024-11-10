@@ -1,17 +1,18 @@
 
-export const EditInfo = ({close}) => {
+export const AddAdmin = ({close}) => {
     const closeModal = close;
+    
 return (
     <div>
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-80"
+            className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50"
             aria-hidden="true"
         >
             <div className="relative p-4 w-full max-w-2xl max-h-full">
-            <div className="relative bg-white rounded-lg shadow text-black">
+            <div className="relative dark:bg-gray-800 text-white rounded-lg shadow">
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                <h3 className="text-xl font-semibold text-black">
-                    Edit Personal informations
+                <h3 className="text-xl font-semibol">
+                    Add new admin
                 </h3>
                 <button
                     onClick={closeModal}
@@ -31,28 +32,31 @@ return (
                         <div className="flex justify-between">
                             <div className="w-[48%]">
                                 <label>Full name</label><br></br>
-                                <input type="text" placeholder="Soufian boukir" className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                                <input type="text" placeholder="Full name" className="dark:bg-gray-700 px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
                             </div>
                             <div className="w-[48%]">
                                 <label>Username</label><br></br>
-                                <input type="text" placeholder="Soufian boukir" className="px-3 w-[100%] py-2 border border-gray-500 rounded-md"/>
-                            </div>
-                        </div>
-                        
-                        <div className="flex justify-between">
-                            <div className="w-[48%]">
-                                <label>Date of birth</label><br></br>
-                                <input type="date" className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
-                            </div>
-                            <div className="w-[48%]">
-                                <label>Phone number</label><br></br>
-                                <input type="text" placeholder="0659523000" className="px-3 w-[100%] py-2 border border-gray-500 rounded-md"/>
+                                <input type="text" placeholder="Username" className="dark:bg-gray-700 px-3 w-[100%] py-2 border border-gray-500 rounded-md"/>
                             </div>
                         </div>
 
                         <div>
-                            <label>Email adress</label><br></br>
-                            <input type="text" placeholder="Soufian boukir" className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                            <label>Role</label><br></br>
+                            <select className="dark:bg-gray-700 px-3 w-[100%] py-2 border border-gray-500 rounded-md">
+                                <option value="">Select role</option>
+                                <option value="">Admin</option>
+                                <option value="">Super Admin</option>
+                            </select>
+                        </div>
+
+
+                        <div>
+                            <label>Password</label><br></br>
+                            <input type="password" placeholder="Password" className="dark:bg-gray-700 px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                        </div>
+                        <div>
+                            <label>Confirm password</label><br></br>
+                            <input type="password" placeholder="Confirm password" className="dark:bg-gray-700 px-3 w-[100%] py-2 border border-gray-500 rounded-md"/>
                         </div>
                     </form>
                 </div>
@@ -63,7 +67,7 @@ return (
                         type="submit"
                         className="bg-green-700 text-white px-4 py-1 rounded-sm"
                     >
-                        Save Changes
+                        Add
                     </button>
                 </div>
             </div>

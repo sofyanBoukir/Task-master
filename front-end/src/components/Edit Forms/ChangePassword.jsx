@@ -1,5 +1,5 @@
 
-export const EditAdress = ({close}) => {
+export const ChangePassword = ({close}) => {
     const closeModal = close;
 return (
     <div>
@@ -9,14 +9,14 @@ return (
         >
             <div className="relative p-4 w-full max-w-2xl max-h-full">
             <div className="relative bg-white rounded-lg ">
-                <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
                 <h3 className="text-xl font-semibold text-gray-900">
-                    Edit adress
+                    Change password
                 </h3>
                 <button
                     onClick={closeModal}
                     type="button"
-                    className="text-gray-400 bg-transparent rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center "
+                    className="text-gray-400 bg-transparentrounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                     aria-label="Close"
                 >
                     <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -30,12 +30,12 @@ return (
                 <div className="p-4 md:p-5 space-y-4">
                 <form className="flex flex-col gap-3">
                         <div>
-                            <label>City</label><br></br>
-                            <input type="text" placeholder="Soufian boukir" className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                            <label className="text-md font-semibold">Password</label><br></br>
+                            <input type="password" className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
                         </div>
                         <div>
-                            <label>Adress</label><br></br>
-                            <input type="text" placeholder="Soufian boukir" className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                            <label className="text-md font-semibold">Confirm password</label><br></br>
+                            <input type="password" className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
                         </div>
                     </form>                
                 </div>

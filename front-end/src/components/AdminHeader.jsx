@@ -26,7 +26,7 @@ export const AdminHeader = () => {
                 <Link className="py-2 text-lg font-semibold" to={"/admin/announcement"}>Announcement</Link><br></br>
                 <Link className="py-2 text-lg font-semibold" to={"/admin/events"}>Events</Link><br></br>
                 <Link className="py-2 text-lg font-semibold" to={"/admin/notifications"}>Notifiications</Link><br></br>
-                <Link className="py-2 text-lg font-semibold">Our team</Link><br></br>
+                <Link className="py-2 text-lg font-semibold" to={"/admin/team"}>Our team</Link><br></br>
                 <Link className="py-2 text-lg font-semibold">Logout</Link><br></br>               
             </MenuList>
             </Menu>

@@ -4,7 +4,7 @@ export const Delete = ({user,close}) => {
 return (
     <div>
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-gray-900 bg-opacity-50"
+            className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-80"
             aria-hidden="true"
         >
             <div className="relative p-4 w-full max-w-2xl max-h-full">
@@ -22,7 +22,6 @@ return (
                     <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
                     <path stroke="currentColor" d="M1 1l6 6m0 0l6 6M7 7l6-6M7 7l-6 6" />
                     </svg>
-                    <span className="sr-only">Close modal</span>
                 </button>
                 </div>
 

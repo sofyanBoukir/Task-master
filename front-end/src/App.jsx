@@ -13,6 +13,7 @@ import { Teachers } from "./pages/admin/Teachers"
 import { Announcement } from "./pages/admin/Announcement"
 import { Events } from "./pages/admin/Events"
 import { Notifications } from "./pages/admin/Notifications"
+import { Team } from "./pages/admin/Team"
 
 export const App = () => {
   return (
@@ -23,9 +24,10 @@ export const App = () => {
             <Route path="/admin/profile" element={<AdminProfile />} />
             <Route path="/admin/students" element={<Students />} />
             <Route path="/admin/teachers" element={<Teachers />} />
-            <Route path="admin/announcement" element={<Announcement />} />
-            <Route path="admin/events" element={<Events />} />
-            <Route path="admin/notifications" element={<Notifications />} />
+            <Route path="/admin/announcement" element={<Announcement />} />
+            <Route path="/admin/events" element={<Events />} />
+            <Route path="/admin/notifications" element={<Notifications />} />
+            <Route path="/admin/team" element={<Team />} />
           </Route>
 
           <Route element={<TeacherRoutes />}>
