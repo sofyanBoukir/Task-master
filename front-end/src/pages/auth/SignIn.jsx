@@ -13,6 +13,7 @@ export const SignIn = () => {
   const [loading,setLoading] = useState(false);
   const navigate = useNavigate();
 
+  
   const errorHandling = () =>{
     let errors = {};
     if(username.current.value === ''){
@@ -119,7 +120,7 @@ export const SignIn = () => {
                 }
                 <Link to={""} className="flex justify-end cursor-pointer font-semibold text-blue-700 underline text-sm">Forgot password</Link>
                 <br></br>
-                <button disabled={loading} className={`${loading? 'bg-blue-500 hover:bg-blue-500 cursor-not-allowed':null} text-lg gap-3 flex items-center justify-center  bg-blue-600 text-white py-1 rounded-lg cursor-pointer hover:bg-blue-700 w-[100%]`} type="submit">
+                <button disabled={loading} className={`${loading?'bg-blue-400 hover:bg-blue-400 cursor-no-drop':null} text-lg gap-3 flex items-center justify-center  bg-blue-600 text-white py-1 rounded-lg cursor-pointer hover:bg-blue-700 w-[100%]`} type="submit">
                   {
                     loading? <div className='flex gap-1 items-center'>
                         <svg aria-hidden="true" className="inline w-4 h-4 text-gray-200 animate-spin dark:text-white fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -14,11 +14,11 @@ export const AdminSideBar = () => {
             </li>
             <li className="flex gap-1 items-center">
                 <UserCircleIcon className="w-9 h-9"/>
-                <Link to={"/admin/dashboard"}><span className="text-lg font-semibold hover:text-blue-500">Profile</span></Link>
+                <Link to={"/admin/profile"}><span className="text-lg font-semibold hover:text-blue-500">Profile</span></Link>
             </li>
             <li className="flex gap-1 items-center">
                 <UsersIcon className="w-9 h-9"/>
-                <Link to={"/admin/dashboard"}><span className="text-lg font-semibold hover:text-blue-500">Students</span></Link>
+                <Link to={"/admin/students"}><span className="text-lg font-semibold hover:text-blue-500">Students</span></Link>
             </li>
             <li className="flex gap-1 items-center">
                 <BriefcaseIcon className="w-9 h-9"/>

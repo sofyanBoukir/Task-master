@@ -19,9 +19,9 @@ export const AdminHeader = () => {
                 <Bars3Icon className="w-10 h-10 px-1" />
             </MenuHandler>
             <MenuList className="px-4 py-3 text-center">
-                <Link className="py-2 text-lg font-semibold">Dashboard</Link><br></br>
-                <Link className="py-2 text-lg font-semibold">Pofile</Link><br></br>
-                <Link className="py-2 text-lg font-semibold">Students</Link><br></br>
+                <Link className="py-2 text-lg font-semibold" to={"/admin/dashboard"}>Dashboard</Link><br></br>
+                <Link className="py-2 text-lg font-semibold" to={"/admin/profile"}>Pofile</Link><br></br>
+                <Link className="py-2 text-lg font-semibold" to={"/admin/students"}>Students</Link><br></br>
                 <Link className="py-2 text-lg font-semibold">Teachers</Link><br></br>
                 <Link className="py-2 text-lg font-semibold">Announcement</Link><br></br>
                 <Link className="py-2 text-lg font-semibold">Events</Link><br></br>
