@@ -1,5 +1,5 @@
 
-export const EditAdress = ({close}) => {
+export const EditAdress = ({close,profile}) => {
     const closeModal = close;
 return (
     <div>
@@ -26,21 +26,19 @@ return (
                 </button>
                 </div>
 
-                {/* Modal body */}
                 <div className="p-4 md:p-5 space-y-4">
                 <form className="flex flex-col gap-3">
                         <div>
                             <label>City</label><br></br>
-                            <input type="text" placeholder="Soufian boukir" className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                            <input type="text" placeholder={profile.city} className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
                         </div>
                         <div>
                             <label>Adress</label><br></br>
-                            <input type="text" placeholder="Soufian boukir" className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                            <input type="text" placeholder={profile.adress} className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
                         </div>
                     </form>                
                 </div>
 
-                {/* Modal footer */}
                 <div className="flex items-center p-4 md:p-5 justify-end">
                     <button
                         onClick={closeModal}

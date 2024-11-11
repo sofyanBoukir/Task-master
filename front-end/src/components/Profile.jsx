@@ -4,7 +4,9 @@ import { useState } from "react";
 import { EditInfo } from "./Edit Forms/EditInfo";
 import { EditAdress } from "./Edit Forms/EditAdress";
 
-export const Profile = () => {
+export const Profile = ({profile}) => {
+
+  const [profilePhoto,setProfilePhoto] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
@@ -25,9 +27,11 @@ export const Profile = () => {
               <img src={image} className="h-24 w-24 rounded-full"/>
             </div>
             <div>
-              <span className="text-xl font-semibold">Soufian boukir</span><br></br>
-              <span className="text-sm">Super Admin</span><br></br>
-              <span className="text-sm">Tiznit, Morocco kingodm</span><br></br>
+              <span className="text-xl font-semibold">{profile.full_name}</span><br></br>
+              <span className="text-sm">{profile.role}</span><br></br>
+              <span className="text-sm">{profile.adress}</span><br></br>
+              <input type="file" name="image" onChange={(e) => setProfilePhoto(e.target.files[0].name)} className="w-52 cursor-pointer bg-blue-500 rounded-sm px-2 py-1  text-white"/><br></br>
+              <input type="submit" value={"Save image"} className="text-white cursor-pointer px-3 py-1 rounded-sm bg-green-700 mt-2" />
             </div>
           </div>
 
@@ -51,34 +55,34 @@ export const Profile = () => {
             <div className="md:flex md:gap-48 ">
               <div className="md:w-[20%]">
                 <label className="text-gray-600 text-sm">Full name</label><br></br>
-                <span className="text-lg font-semibold">Soufian boukir</span>
+                <span className="text-lg font-semibold">{profile.full_name}</span>
               </div>
               <div className="md:w-[20%]">
                 <label className="text-gray-600 text-sm">Username</label><br></br>
-                <span className="text-lg font-semibold">sof1_boukir</span>
+                <span className="text-lg font-semibold">{profile.username}</span>
               </div>
               <div className="md:w-[20%]">
                 <label className="text-gray-600 text-sm">Date of birth</label><br></br>
-                <span className="text-lg font-semibold">13-11-2004</span>
+                <span className="text-lg font-semibold">{profile.dob}</span>
               </div>
             </div>
             <div className="md:flex md:gap-48 mt-4">
               <div className="md:w-[20%]">
                   <label className="text-gray-600 text-sm">Email adress</label><br></br>
-                  <span className="text-lg font-semibold">soufianboukir0@gmail.com</span>
+                  <span className="text-lg font-semibold">{profile.email}</span>
                 </div>
                 <div className="md:w-[20%]">
                   <label className="text-gray-600 text-sm">Phone number</label><br></br>
-                  <span className="text-lg font-semibold">0659523000</span>
+                  <span className="text-lg font-semibold">{profile.phone_number}</span>
                 </div>
                 <div className="md:w-[20%]">
                   <label className="text-gray-600 text-sm">User role</label><br></br>
-                  <span className="text-lg font-semibold">Super Admin</span>
+                  <span className="text-lg font-semibold">{profile.role}</span>
                 </div>
             </div>
             <div>
               {isModalOpen && (
-                <EditInfo close={closeModal} />
+                <EditInfo close={closeModal} profile={profile} />
               )}
             </div>
           </div>
@@ -108,16 +112,16 @@ export const Profile = () => {
               </div>
               <div className="md:w-[20%]">
                 <label className="text-gray-600 text-sm">City</label><br></br>
-                <span className="text-lg font-semibold">Tiznit</span>
+                <span className="text-lg font-semibold">{profile.city}</span>
               </div>
               <div className="md:w-[20%]">
                 <label className="text-gray-600 text-sm">Adress</label><br></br>
-                <span className="text-lg font-semibold">213 Lot loubane tiznit</span>
+                <span className="text-lg font-semibold">{profile.adress}</span>
               </div>
             </div>
             <div>
               {isModalOpen2 && (
-                <EditAdress close={closeModal2} />
+                <EditAdress close={closeModal2} profile={profile} />
               )}
             </div>
           </div>
