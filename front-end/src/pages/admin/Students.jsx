@@ -4,7 +4,7 @@ import { AdminSideBar } from "../../components/AdminSideBar"
 import { AddStudent } from "../../components/AddUsers/AddUser";
 import { EditStudent } from "../../components/EditUsers.jsx/EditUser";
 import { Delete } from "../../components/DeleteModal/Delete";
-import { getStudents } from "../../services/adminServices/studentsServices";
+import { getStudents, getStudentsByName } from "../../services/adminServices/studentsServices";
 import { LinearProgress } from "@mui/material";
 export const Students = () => {
     const [addStudent,setAddStudent] = useState(false);
@@ -14,6 +14,7 @@ export const Students = () => {
     const [page,setPage] = useState(1);
     const [lastPage,setLastPage] = useState(0);
     const [totalStudents,setTotalStudents] = useState();
+    const [studentName,setStudentName] = useState('');
 
     const [studentsData,setStudentsData] = useState([]);
 
@@ -30,15 +31,24 @@ export const Students = () => {
         setLoading(true);
         const response = await getStudents(page);
         setLoading(false);
-        
         setLastPage(response.data.students.last_page);
         setTotalStudents(response.data.students.total);
         setStudentsData(response.data.students.data);
     }
 
+    const getStudentsDataByName = async () =>{
+        setLoading(true);
+        const response = await getStudentsByName(studentName);
+        setLoading(false);        
+        setLastPage(response.data.students.last_page);
+        setTotalStudents(response.data.students.total);
+        setStudentsData(response.data.students.data);
+    }
+    
     useEffect(() => {
-        getStudentsData();
-    },[page]);
+        studentName !== '' 
+        ? getStudentsDataByName() : getStudentsData();
+    },[studentName,page])
 
   return (
     <div>
@@ -52,8 +62,11 @@ export const Students = () => {
                 </div>
                 <div className="mt-4 flex justify-between w-[100%]">
                     <div className="w-[60%] flex gap-2">
-                        <input type="text" placeholder="Search for students" className="bg-gray-100 font-semibold border-2 outline-none w-[60%] border-gray-400 px-3 py-2 rounded-md"/>
-                        <input type="text" placeholder="Search based on username" className="bg-gray-100 font-semibold border-2 outline-none w-[40%] border-gray-400 px-3 py-2 rounded-md"/>
+                        <input type="text"
+                        placeholder="Search for students"
+                        value={studentName}
+                        onChange={(e) => setStudentName(e.target.value)}
+                        className="bg-gray-100 font-semibold border-2 outline-none w-[60%] border-gray-400 px-3 py-2 rounded-md"/>
                     </div>
                     <div>
                         <button className="bg-blue-600 text-white px-3 py-2 rounded-md" onClick={openAddStudent}>Add Student</button>
@@ -101,7 +114,7 @@ export const Students = () => {
                     <br></br>
                     {
                         studentsData && studentsData.length ? <div className="flex justify-between">
-                            <span className="text-lg font-semibold">Showing 5 from {totalStudents}</span>
+                            <span className="text-lg font-semibold">Showing {studentsData.length} from {totalStudents}</span>
                             <div className="flex gap-4">
                                 <button className="rounded-sm border-2 text-blue-500 border-blue-600 px-3 py-1" disabled={page===1} onClick={() => setPage(page - 1)}>Previous</button>
                                 <button className="rounded-sm border-2 border-white text-white bg-blue-600 px-3 py-1" disabled={page === lastPage} onClick={() => setPage(page+1)}>Next</button>

@@ -3,6 +3,7 @@ export const Delete = ({user,close}) => {
     const closeModal = close;
 return (
     <div>
+
         <div
             className="fixed inset-0 z-50 flex items-center justify-center w-full h-full bg-black bg-opacity-80"
             aria-hidden="true"

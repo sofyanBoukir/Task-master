@@ -24,4 +24,5 @@ Route::prefix("/admin/profile")->group(function(){
 
 Route::prefix("/admin/students")->group(function(){
     Route::get("/getStudents",[StudentsControlller::class,"getStudents"]);
+    Route::get("/getStudentsByName/{name}",[StudentsControlller::class,"getStudentsByName"]);
 });
