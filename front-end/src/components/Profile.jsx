@@ -3,6 +3,8 @@ import { AdminHeader } from "./AdminHeader";
 import { useState } from "react";
 import { EditInfo } from "./Edit Forms/EditInfo";
 import { EditAdress } from "./Edit Forms/EditAdress";
+import { editImage } from "../services/adminServices/profileServices";
+import { Alert, CircularProgress, Snackbar } from "@mui/material";
 
 export const Profile = ({profile}) => {
 
@@ -10,6 +12,11 @@ export const Profile = ({profile}) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpen2, setIsModalOpen2] = useState(false);
+  const [invalidPhoto,setInvalidPhoto] = useState(false);
+  const [loading,setLoading] = useState(false);
+  const userId = localStorage.getItem('userId');
+  const [updated,setUpdated] = useState(false);
+  const [open,setOpen] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -17,6 +24,26 @@ export const Profile = ({profile}) => {
   const openModal2 = () => setIsModalOpen2(true);
   const closeModal2 = () => setIsModalOpen2(false);
 
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+    if(profilePhoto === null){
+      setInvalidPhoto(true);
+
+    }else{
+      setInvalidPhoto(false);
+      setLoading(true);
+      let formData = new FormData();
+      formData.append("image",profilePhoto)
+      const response = await editImage(userId,formData);
+      setLoading(false);
+      console.log(response);
+      
+      if(response.data.updated){
+        setUpdated(true);
+        setOpen(true);
+      }
+    }
+  }
   return (
     <div className="px-4">
         <AdminHeader />
@@ -24,17 +51,44 @@ export const Profile = ({profile}) => {
           <h1 className="text-2xl font-semibold">My profile</h1>
           <div className="mt-2 bg-gray-100 border-2 rounded-lg px-4 py-3 flex gap-6 items-center">
             <div>
-              <img src={image} className="h-24 w-24 rounded-full"/>
+              <img src={profile.profile_picture ? 'http://localhost:8000/storage/admin/'+profile.profile_picture : image} className="h-24 w-24 rounded-full"/>
             </div>
             <div>
               <span className="text-xl font-semibold">{profile.full_name}</span><br></br>
               <span className="text-sm">{profile.role}</span><br></br>
               <span className="text-sm">{profile.adress}</span><br></br>
-              <input type="file" name="image" onChange={(e) => setProfilePhoto(e.target.files[0].name)} className="w-52 cursor-pointer bg-blue-500 rounded-sm px-2 py-1  text-white"/><br></br>
-              <input type="submit" value={"Save image"} className="text-white cursor-pointer px-3 py-1 rounded-sm bg-green-700 mt-2" />
+              <form onSubmit={handleSubmit}>
+                <input type="file" name="image" onChange={(e) => setProfilePhoto(e.target.files[0])} className="w-52 cursor-pointer bg-blue-500 rounded-sm px-2 py-1  text-white"/><br></br>
+                <button className="text-white cursor-pointer px-3 py-1 w-[70%] rounded-sm bg-blue-700 mt-2">
+                {
+                    loading ?
+                    <CircularProgress color="white" size={"18px"}/>
+                    : "Save Changes"
+                }
+                </button>
+                <br></br>
+                {
+                  invalidPhoto &&
+                  <span className="text-red-700">Upload an image!</span>
+                }
+              </form>
             </div>
           </div>
 
+          {
+            updated && (
+                <Snackbar open={open} className="bg-green-600 rounded-md text-white cursor-pointer" 
+                autoHideDuration={6000} onClick={() => setOpen(false)}>
+                    <Alert
+                        severity="success"
+                        variant="filled"
+                        sx={{ width: '100%' }}
+                    >
+                      Your profile photo updated successfully
+                    </Alert>
+                </Snackbar>
+            )
+        }
 
           <div className="mt-2 bg-gray-100 border-2 rounded-lg px-4 py-3">
             <div className="flex justify-between w-[100%]">

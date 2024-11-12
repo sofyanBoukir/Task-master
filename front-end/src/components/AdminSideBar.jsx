@@ -40,10 +40,6 @@ export const AdminSideBar = () => {
                 <UserGroupIcon className="w-9 h-9"/>
                 <Link to={"/admin/team"}><span className="text-lg font-semibold hover:text-blue-500">Our team</span></Link>
             </li>
-            <li className="flex gap-1 items-center ">
-                <img src={image} className="h-10 w-10 rounded-full"/>               
-                <span className="text-lg font-semibold">Soufian boukir</span> 
-            </li>
             <li className="flex gap-1 items-center">
                 <ArrowRightStartOnRectangleIcon className="w-9 h-9"/>
                 <Link to={"/admin/dashboard"}><span className="text-lg font-semibold">Logout</span></Link>

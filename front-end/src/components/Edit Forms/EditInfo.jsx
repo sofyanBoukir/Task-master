@@ -1,15 +1,14 @@
 import { useState } from "react";
 import { editPersonalInformations } from "../../services/adminServices/profileServices";
-import { CircularProgress } from "@mui/material";
+import { Alert, CircularProgress, Snackbar } from "@mui/material";
 
 export const EditInfo = ({close,profile}) => {
     const closeModal = close;
-    const [errors,setErrors] = useState({});
     const userId = profile.id;
-    const [invalidData,setInvalidData] = useState(false);
     const [loading,setLoading] = useState(false);
     const [usernameExist,setUsernameExist] = useState(false);
     const [updated,setUpdated] = useState(false);
+    const [open,setOpen] = useState(false);
 
     const [formInfo,setFormInfo] = useState({
         full_name : profile.full_name,
@@ -28,21 +27,21 @@ export const EditInfo = ({close,profile}) => {
 
     const handleSubmit = async (e) =>{
         e.preventDefault();
-        setLoading(true);
         if(formInfo.full_name === '' || formInfo.username === '' 
             || formInfo.dob === '' || formInfo.phone_number === ''){
-                setInvalidData(true)
+                return;
         }else{
-            setInvalidData(false)
+            setLoading(true);
             const response = await editPersonalInformations(userId,formInfo);
             setLoading(false);
             if(response.data.exist_username){
-                setUpdated(false)
+                setUpdated(false);
                 setUsernameExist(true);
-            }
-            if(response.data.updated){
-                setUsernameExist(false)
+                setOpen(true);
+            }else{
+                setUsernameExist(false);
                 setUpdated(true);
+                setOpen(true);
             }
         }
     }
@@ -122,18 +121,31 @@ return (
                         </div>
                         <div>
                             {
-                                invalidData && (
-                                    <span className="text-red-600 text-sm">Field cannot be null</span>
-                                )
-                            }
-                            {
                                 usernameExist && (
-                                    <span className="text-red-600 text-sm">This username already exist</span>
-                                )
+                                        <Snackbar open={open} className="bg-red-600 rounded-md text-white cursor-pointer" 
+                                        autoHideDuration={6000} onClick={() => setOpen(false)}>
+                                            <Alert
+                                                severity="error"
+                                                variant="filled"
+                                                sx={{ width: '100%' }}
+                                            >
+                                                This username alreay exist
+                                            </Alert>
+                                        </Snackbar>
+                                    )
                             }
                             {
                                 updated && (
-                                    <span className="text-green-600 text-sm">You informations updated successfully!</span>
+                                    <Snackbar open={open} className="bg-green-600 rounded-md text-white cursor-pointer" 
+                                    autoHideDuration={6000} onClick={() => setOpen(false)}>
+                                        <Alert
+                                            severity="success"
+                                            variant="filled"
+                                            sx={{ width: '100%' }}
+                                        >
+                                            Your data updated successfully!
+                                        </Alert>
+                                    </Snackbar>
                                 )
                             }
                         </div>

@@ -1,6 +1,43 @@
+import { useState } from "react";
+import { editAdress } from "../../services/adminServices/profileServices";
+import { Alert, CircularProgress, Snackbar } from "@mui/material";
 
 export const EditAdress = ({close,profile}) => {
     const closeModal = close;
+    const [loading,setLoading] = useState(false);
+    const userId = localStorage.getItem("userId");
+    const [updated,setUpdated] = useState(false);
+    const [open,setOpen] = useState(false)
+
+    const [adressInfo,setAdressInfo] = useState({
+        city : profile.city,
+        adress : profile.adress,
+    });
+
+    const hanldeChange = (e) =>{
+        const {name,value} = e.target;
+        setAdressInfo(prevState =>({
+            ...prevState,
+            [name] : value,
+        }));
+    }
+
+    const handleSubmit = async (e) =>{
+        console.log("cc");
+        
+        e.preventDefault();
+        if(adressInfo.city === '' || adressInfo.adress === ''){
+            return;
+        }else{
+            setLoading(true);
+            const response = await editAdress(userId,adressInfo);
+            setLoading(false);
+            if(response.data.updated){
+                setOpen(true)
+                setUpdated(true);
+            }
+        }
+    }
 return (
     <div>
         <div
@@ -27,27 +64,55 @@ return (
                 </div>
 
                 <div className="p-4 md:p-5 space-y-4">
-                <form className="flex flex-col gap-3">
+                <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
                         <div>
                             <label>City</label><br></br>
-                            <input type="text" placeholder={profile.city} className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                            <input type="text" 
+                            placeholder={profile.city} 
+                            className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"
+                            name="city"
+                            value={adressInfo.city}
+                            onChange={hanldeChange}/>
                         </div>
                         <div>
                             <label>Adress</label><br></br>
-                            <input type="text" placeholder={profile.adress} className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
+                            <input type="text" 
+                            placeholder={profile.adress} 
+                            className="px-3 py-2 w-[100%] border border-gray-500 rounded-md"
+                            name="adress"
+                            value={adressInfo.adress}
+                            onChange={hanldeChange}/>
                         </div>
-                    </form>                
-                </div>
-
-                <div className="flex items-center p-4 md:p-5 justify-end">
-                    <button
-                        onClick={closeModal}
-                        type="submit"
-                        className="bg-green-700 text-white px-4 py-1 rounded-sm"
-                    >
-                        Save Changes
-                    </button>
-                </div>                
+                        <div>
+                            {
+                                updated && (
+                                    <Snackbar open={open} className="bg-green-600 rounded-md text-white cursor-pointer" 
+                                    autoHideDuration={6000} onClick={() => setOpen(false)}>
+                                        <Alert
+                                            severity="success"
+                                            variant="filled"
+                                            sx={{ width: '100%' }}
+                                        >
+                                            Your data updated successfully!
+                                        </Alert>
+                                    </Snackbar>
+                                )
+                            }
+                        </div>
+                        <div className="flex items-center p-2 md:p-2 justify-end">
+                            <button
+                                type="submit"
+                                className="bg-green-700 text-white px-4 py-1 rounded-sm w-[25%]"
+                            >
+                                {
+                                    loading ?
+                                    <CircularProgress color="white" size={"18px"}/>
+                                    : "Save Changes"
+                                }
+                            </button>
+                        </div>     
+                    </form>             
+                </div>              
             </div>
             </div>
         </div>

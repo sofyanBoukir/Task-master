@@ -1,13 +1,21 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AdminHeader } from "../../components/AdminHeader"
 import { AdminSideBar } from "../../components/AdminSideBar"
 import { AddStudent } from "../../components/AddUsers/AddUser";
 import { EditStudent } from "../../components/EditUsers.jsx/EditUser";
 import { Delete } from "../../components/DeleteModal/Delete";
+import { getStudents } from "../../services/adminServices/studentsServices";
+import { LinearProgress } from "@mui/material";
 export const Students = () => {
     const [addStudent,setAddStudent] = useState(false);
     const [editStudent,setEditStudent] = useState(false);
     const [deleteStudent,setDeleteStudent] = useState(false);
+    const [loading,setLoading] = useState(false);
+    const [page,setPage] = useState(1);
+    const [lastPage,setLastPage] = useState(0);
+    const [totalStudents,setTotalStudents] = useState();
+
+    const [studentsData,setStudentsData] = useState([]);
 
     const openAddStudent = () => setAddStudent(true);
     const closeAddStudent = () => setAddStudent(false);
@@ -17,6 +25,20 @@ export const Students = () => {
 
     const openDeleteStudent = () => setDeleteStudent(true);
     const closeDeleteStudent = () => setDeleteStudent(false);
+
+    const getStudentsData = async () =>{
+        setLoading(true);
+        const response = await getStudents(page);
+        setLoading(false);
+        
+        setLastPage(response.data.students.last_page);
+        setTotalStudents(response.data.students.total);
+        setStudentsData(response.data.students.data);
+    }
+
+    useEffect(() => {
+        getStudentsData();
+    },[page]);
 
   return (
     <div>
@@ -52,23 +74,43 @@ export const Students = () => {
                             </tr>
                         </thead>
                         <tbody className="border border-gray-400">
-                            <tr>
-                                <td className="text-center text-lg py-2">#</td>
-                                <td className="text-center text-lg py-2">Full name</td>
-                                <td className="text-center text-lg py-2">username</td>
-                                <td className="text-center text-lg py-2 hidden md:table-cell">Grade</td>
-                                <td className="text-center text-lg py-2 hidden md:table-cell">Adress</td>
-                                <td className="text-center text-lg py-2 hidden md:table-cell">Gender</td>
-                                <td className="text-center text-lg py-2 hidden md:table-cell">Date of birth</td>
-                                <td className="hidden md:table-cell text-center text-lg py-2">
-                                    <div className="flex gap-1 justify-center">
-                                        <button className="bg-red-500 text-white rounded-sm px-3 py-1" onClick={openDeleteStudent}>Delete</button>
-                                        <button className="bg-green-600 text-white rounded-sm px-3 py-1" onClick={openEditStudent}>Edit</button>
-                                    </div>
-                                </td>
-                            </tr>
+                            {
+                                studentsData && studentsData.length ?
+                                    studentsData.map((student) =>{
+                                        return <>
+                                            <tr>
+                                                <td className="text-center text-lg py-2">{student.id}</td>
+                                                <td className="text-center text-lg py-2">{student.full_name}</td>
+                                                <td className="text-center text-lg py-2">{student.username}</td>
+                                                <td className="text-center text-lg py-2 hidden md:table-cell">{student.grade}</td>
+                                                <td className="text-center text-lg py-2 hidden md:table-cell">{student.adress.substr(1,20)}...</td>
+                                                <td className="text-center text-lg py-2 hidden md:table-cell">{student.gender}</td>
+                                                <td className="text-center text-lg py-2 hidden md:table-cell">{student.dob}</td>
+                                                <td className="hidden md:table-cell text-center text-lg py-2">
+                                                    <div className="flex gap-1 justify-center">
+                                                        <button className="bg-red-500 text-white rounded-sm px-3 py-1" onClick={openDeleteStudent}>Delete</button>
+                                                        <button className="bg-green-600 text-white rounded-sm px-3 py-1" onClick={openEditStudent}>Edit</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </>
+                                    }): null
+                            }                           
                         </tbody>
                     </table>
+                    <br></br>
+                    {
+                        studentsData && studentsData.length ? <div className="flex justify-between">
+                            <span className="text-lg font-semibold">Showing 5 from {totalStudents}</span>
+                            <div className="flex gap-4">
+                                <button className="rounded-sm border-2 text-blue-500 border-blue-600 px-3 py-1" disabled={page===1} onClick={() => setPage(page - 1)}>Previous</button>
+                                <button className="rounded-sm border-2 border-white text-white bg-blue-600 px-3 py-1" disabled={page === lastPage} onClick={() => setPage(page+1)}>Next</button>
+                            </div>
+                        </div>:null
+                    }
+                    {
+                        loading && <LinearProgress />
+                    }
                 </div>
                 {
                     addStudent && (
