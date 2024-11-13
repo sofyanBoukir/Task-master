@@ -15,16 +15,27 @@ export const Students = () => {
     const [lastPage,setLastPage] = useState(0);
     const [totalStudents,setTotalStudents] = useState();
     const [studentName,setStudentName] = useState('');
+    const [studentId,setStudentId] = useState(null);
+    const [studentFullName,setStudentFullName] = useState("");
+    
 
     const [studentsData,setStudentsData] = useState([]);
 
     const openAddStudent = () => setAddStudent(true);
     const closeAddStudent = () => setAddStudent(false);
 
-    const openEditStudent = () => setEditStudent(true);
+    const openEditStudent = (id,name) => {
+        setEditStudent(true);
+        setStudentId(id)        
+        setStudentFullName(name)
+    }
     const closeEditStudent = () => setEditStudent(false);
 
-    const openDeleteStudent = () => setDeleteStudent(true);
+    const openDeleteStudent = (id,name) => {
+        setDeleteStudent(true)
+        setStudentId(id)        
+        setStudentFullName(name)
+    };
     const closeDeleteStudent = () => setDeleteStudent(false);
 
     const getStudentsData = async () =>{
@@ -101,8 +112,8 @@ export const Students = () => {
                                                 <td className="text-center text-lg py-2 hidden md:table-cell">{student.dob}</td>
                                                 <td className="hidden md:table-cell text-center text-lg py-2">
                                                     <div className="flex gap-1 justify-center">
-                                                        <button className="bg-red-500 text-white rounded-sm px-3 py-1" onClick={openDeleteStudent}>Delete</button>
-                                                        <button className="bg-green-600 text-white rounded-sm px-3 py-1" onClick={openEditStudent}>Edit</button>
+                                                        <button className="bg-red-500 text-white rounded-sm px-3 py-1" onClick={() => openDeleteStudent(student.id,student.full_name)}>Delete</button>
+                                                        <button className="bg-green-600 text-white rounded-sm px-3 py-1" onClick={() => openEditStudent(student.id,student.full_name)}>Edit</button>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -132,14 +143,14 @@ export const Students = () => {
                 }
                 {
                     editStudent && (
-                        <EditStudent user={"Student"} close={closeEditStudent}/>
+                        <EditStudent id={studentId} user={studentFullName} close={closeEditStudent}/>
                     )
                 }
                 {
                     deleteStudent && (
-                        <Delete user={"Student"} close={closeDeleteStudent}/>
+                        <Delete id={studentId} user={studentFullName} close={closeDeleteStudent}/>
                     )
-                }
+                } 
             </div>
         </div>
       </div>

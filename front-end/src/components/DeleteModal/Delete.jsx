@@ -1,7 +1,22 @@
+import { useEffect, useState } from "react";
+import { deleteStudent } from "../../services/adminServices/studentsServices";
+import { Alert, CircularProgress, Snackbar } from "@mui/material";
 
-export const Delete = ({user,close}) => {
+export const Delete = ({id,user,close}) => {
     const closeModal = close;
-return (
+    const [loading,setLoading] = useState(false);
+    const [isDeleted,setIsDeleted] = useState(false);
+    const [open,setOpen] = useState(true);
+
+    const deleteS = async () =>{
+        setLoading(true);
+        const response = await deleteStudent(id);
+        setLoading(false)
+        if(response.data.deleted){
+            setIsDeleted(true)
+        }
+    }
+    return (
     <div>
 
         <div
@@ -12,7 +27,7 @@ return (
             <div className="relative bg-white text-black rounded-lg shadow">
                 <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibol">
-                    Delete {user}
+                    Delete <span className="text-2xl font-semibold">{user}</span>
                 </h3>
                 <button
                     onClick={closeModal}
@@ -27,13 +42,33 @@ return (
                 </div>
 
                 <div className="p-4 md:p-5 space-y-4">
-                    <h1 className="text-center text-3xl font-semibold">Are you sure you want to delete Student Soufian boukir</h1>
+                    <h1 className="text-center text-3xl font-semibold">Are you sure you want to delete {user}</h1>
                     <div className="flex gap-3 justify-center mt-5">
                         <button className="bg-white border border-black px-4 py-1 rounded-sm" onClick={closeModal}>Cancel</button>
-                        <button className="bg-red-600 text-white px-4 py-1 rounded-sm">Delete</button>
+                        <button className="bg-red-600 text-white px-4 py-1 rounded-sm w-[22%]" onClick={() => deleteS()}>
+                            {   
+                                loading ? 
+                                <CircularProgress size={"18px"} color="white"/>
+                                : "Delete"
+                            }
+                        </button>
                     </div>
                 </div>
             </div>
+            {
+                isDeleted && (
+                    <Snackbar open={open} className="bg-green-600 rounded-md text-white cursor-pointer" 
+                        autoHideDuration={6000} onClick={() => setOpen(false)}>
+                            <Alert
+                                severity="success"
+                                variant="filled"
+                                sx={{ width: '100%' }}
+                            >
+                            Deleted successfully!
+                            </Alert>
+                    </Snackbar>
+                )
+            }
             </div>
         </div>
     </div>

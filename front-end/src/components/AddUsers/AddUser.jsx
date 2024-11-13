@@ -80,7 +80,7 @@ return (
                                 {
                                     user === 'Teacher' && (
                                         <>
-                                            <label>Grade</label><br></br>
+                                            <label>Subject</label><br></br>
                                             <select className="dark:bg-gray-700 px-3 w-[100%] py-2 border border-gray-500 rounded-md">
                                                 <option value="">Select Subject</option>
                                                 <option value="">Select Subject</option>
@@ -98,16 +98,19 @@ return (
                             </div>
                         </div>
 
-                        <div className="flex justify-between">
-                            <div className="w-[48%]">
-                                <label>Salary</label><br></br>
-                                <input type="number" placeholder="Salary" className="dark:bg-gray-700 px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
-                            </div>
-                            <div className="w-[48%]">
-                                <label>Email adress</label><br></br>
-                                <input type="text" placeholder="Email adress" className="dark:bg-gray-700 px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
-                            </div>
+                        <div>
+                            <label>Email adress</label><br></br>
+                            <input type="text" placeholder="Email adress" className="dark:bg-gray-700 px-3 py-2 w-[100%] border border-gray-500 rounded-md"/>
                         </div>
+                        
+                        {
+                            user === 'Teacher' && (
+                                <>
+                                    <label>Salary</label><br></br>
+                                    <input type="number" placeholder="Salary" className="dark:bg-gray-700 px-3 py-2 border border-gray-500 rounded-md"/>
+                                </>
+                            )
+                        }
 
                         <div className="flex justify-between">
                             <div className="w-[48%]">
