@@ -27,4 +27,5 @@ Route::prefix("/admin/students")->group(function(){
     Route::get("/getStudentsByName/{name}",[StudentsControlller::class,"getStudentsByName"]);
     Route::delete("/deleteStudent/{id}",[StudentsControlller::class,"deleteStudent"]);
     Route::patch("/editStudent/{id}",[StudentsControlller::class,"editStudent"]);
+    Route::post("/addStudent",[StudentsControlller::class,"addStudent"]);
 });

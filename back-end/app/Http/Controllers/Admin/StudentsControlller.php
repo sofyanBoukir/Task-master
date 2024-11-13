@@ -51,4 +51,30 @@ class StudentsControlller extends Controller
             "success" => "Data updated successfully!",
         ]);
     }
+
+    public function addStudent(Request $request){
+        $usernameExists = Student::where("username",$request->username)->first();
+        if($usernameExists){
+            return response()->json([
+                "usernameExists" => true,
+            ]);
+        }
+
+        Student::create([
+            "full_name" => $request->full_name,
+            "email" => $request->email,
+            "username" => $request->username,
+            "password" => $request->password,
+            "adress" => $request->adress,
+            "gender" => $request->gender,
+            "grade" => $request->grade,
+            "phone_number" => $request->phone_number,
+            "dob" => $request->dob,
+            "city" => $request->city,
+        ]);
+
+        return response()->json([
+            "inserted" => true,
+        ]);
+    }
 }
