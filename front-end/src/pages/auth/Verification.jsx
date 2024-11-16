@@ -5,6 +5,7 @@ import { Label } from "../../components/UI/Label"
 import { verifyCode } from "../../services/authService"
 import { Notification } from "../../components/UI/Notification"
 import { LinearLoading } from "../../components/UI/LinearLoading"
+import { useNavigate } from "react-router-dom"
 
 export const Verification = ({full_name,email,password}) => {
 
@@ -14,9 +15,11 @@ export const Verification = ({full_name,email,password}) => {
         password : password,
         verificationCode : '',
     })
+
+    const navigate = useNavigate();
     const [loading,setLoading] = useState(false);
     const [incorrectCode,setIncorrectCode] = useState(false);
-    const [success,setSuccess] = useState(true);
+    const [success,setSuccess] = useState(false);
 
     const handleChange = (e) =>{
         const {name,value} = e.target;
@@ -37,6 +40,9 @@ export const Verification = ({full_name,email,password}) => {
             setIncorrectCode(true);
         }else if(response.data.registred){
             setSuccess(true);
+            setTimeout(() => {
+                navigate("/");
+            }, 3000);
         }
     }
   return (
@@ -52,14 +58,19 @@ export const Verification = ({full_name,email,password}) => {
                         <Input type={"number"} width={'80%'} placeholder={"Ex: 892842"} name={"verificationCode"} size={"6"} value={formData.verificationCode} onChange={handleChange}/>
                     </div>
                 </div>
+                {
+                    success ? 
+                        <div className="mt-3">
+                            <span className="text-green-700">Success! Redirecting to login</span>
+                            <LinearLoading />
+                        </div>  
+                    :null
+                }
                 <br></br>
                 <Button text={"Verify now"} bg={"bg-blue-600"} width={"100%"} loading={loading}/>
             </form>
             {
-                incorrectCode && <Notification kind={"error"} message={"The code entered is wrong!"}/>
-            }
-            {
-                success && <LinearLoading />
+                incorrectCode && <Notification kind={"error"} message={"The code entered is wrong or expired!"}/>
             }
         </div>
     </div>

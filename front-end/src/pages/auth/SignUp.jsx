@@ -2,10 +2,11 @@ import { Link } from "react-router-dom"
 import { Label } from "../../components/UI/Label"
 import { Input } from "../../components/UI/input"
 import { Button } from "../../components/UI/Button"
-import { useState } from "react"
+import { useContext, useState } from "react"
 import { Verification } from "./Verification"
 import { sendVerifyCode } from "../../services/authService"
 import { NormalNotification } from "../../components/UI/NormalNotification"
+import { AuthContext } from "../../context/AuthContext"
 
 export const SignUp = () => {
     const [formData,setFormData] = useState({
@@ -33,8 +34,7 @@ export const SignUp = () => {
         setLoading(true);
         const response = await sendVerifyCode(formData);
         setLoading(false);
-        console.log(response);
-        
+                
         if(response.data.code_sended){
             setIsCodeSent(true);
         }
@@ -42,7 +42,6 @@ export const SignUp = () => {
             setUserExists(true);
         }
     }   
-
 
   return (
     <div className="lg:w-[35%] w-[90%] mx-auto px-10 py-5 text-center shadow-md rounded-md bg-white border-black mt-20">

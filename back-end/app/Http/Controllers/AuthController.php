@@ -4,15 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Password;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    public function login(Request $request){
+        $credentials = $request->only("email","password");
+
+        if(!$token = JWTAuth::attempt($credentials)){
+            return response()->json([
+                "success" => false,
+            ]);
+        }
+
+        return response()->json([
+            "token" => $token,
+            "user" => Auth::user(),
+            "success" => true,
+        ]);
+    }
+
     public function sendVerificationCode(Request $request){
         $email = $request->email;
         $verification_code = rand(100000,999999);
@@ -40,9 +57,6 @@ class AuthController extends Controller
         ],200);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function checkVerificationCode(Request $request)
     {
         $email = $request->email;
@@ -60,6 +74,7 @@ class AuthController extends Controller
             User::create([
                 "full_name" => $full_name,
                 "email" => $email,
+                "email_verified_at" => now(),
                 "password" => Hash::make($password),
             ]);
             
@@ -73,13 +88,46 @@ class AuthController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
+    public function forgotPassword(Request $request){
+        $user_exists = User::where("email",$request->email)->exists();
+        if(!$user_exists){
+            return response()->json([
+                "userNotExist" => true,
+            ]);
+        }
+
+        $status = Password::sendResetLink($request->only("email"));
+        if($status === Password::RESET_LINK_SENT){
+            return response()->json([
+                "sended" => true,
+                "message" => __($status),
+            ]);
+        }
+        return response()->json([
+            "sended" => false,
+            "error" => __($status),
+        ]);
+    }
     
+    public function resetPassword(Request $request){
+        $status = Password::reset(
+            $request->only("email","password","retype_password","token"),
+            function($user,$password){
+                $user->password = Hash::make($password);
+                $user->save();
+            }
+        );
+
+        if($status === Password::PASSWORD_RESET){
+            return response()->json([
+                "reseted" => true,
+                "message" => __($status),
+            ]);
+        }
+        return response()->json([
+            "reseted" => false,
+            "message" => __($status),
+        ]);
+    }
 }
