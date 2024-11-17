@@ -21,9 +21,16 @@ export const Dashboard = () => {
       <SideBar />
       <div className="flex-1">
         <Header />
-        <div className="ml-16 w-[85%] p-3">
+        <div className="ml-16 w-[85%] p-3 mt-14">
           <h1 className="text-2xl font-semibold">Your projects</h1>
           <div className="flex gap-4 mt-5 flex-wrap">
+            <Project />
+            <Project />
+            <Project />
+            <Project />
+            <Project />
+            <Project />
+            <Project />
             <Project />
             <Project />
             <Project />

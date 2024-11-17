@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"
+import { json, Link, useNavigate } from "react-router-dom"
 import { Label } from "../../components/UI/Label"
 import { Input } from "../../components/UI/input"
 import { Button } from "../../components/UI/Button"
@@ -19,9 +19,6 @@ export const Login = () => {
     const [success,setSuccess] = useState(false);
     const [invalidData,setInvalidData] = useState(false);
     const {register,isLoggedOut} = useContext(AuthContext);
-
-    console.log(isLoggedOut);
-    
 
     const handleChange = (e) =>{
         const {name,value} = e.target;
@@ -44,9 +41,9 @@ export const Login = () => {
             setSuccess(true);
             localStorage.setItem("token",response.data.token);
             localStorage.setItem("isAuthenticated","true");
-            register(response.data.user);
+            localStorage.setItem("userData",JSON.stringify(response.data.user));
             navigate("/main/dashboard");
-        }        
+        }
     }
   return (
     <div className="lg:w-[35%] w-[90%] mx-auto px-10 py-5 text-center shadow-md rounded-md bg-white border-black mt-20">

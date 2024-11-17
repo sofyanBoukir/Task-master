@@ -8,7 +8,7 @@ export const SideBar = () => {
   const path = location.pathname;
   
   return (
-  <div className="bg-white shadow-sm h-screen w-16 flex flex-col items-center py-10 gap-5 fixed mt-10">
+  <div className="bg-white shadow-sm h-screen w-16 flex flex-col items-center gap-5 fixed pt-20">
       <div>
         <Squares2X2Icon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/dashboard'? `text-blue-700`:null}`}
          onClick={() => navigate("/main/dashboard")}/>

@@ -9,7 +9,7 @@ export const Tasks = () => {
       <SideBar />
       <div className="flex-1">
         <Header />
-        <div className="ml-16 w-[85%] p-3">
+        <div className="ml-16 w-[85%] p-3 mt-14">
           <h1 className="text-2xl font-semibold">Your Tasks</h1>
           <div className="flex gap-4 mt-5 flex-wrap">
             <Task />

@@ -1,10 +1,54 @@
-import { PlusCircleIcon } from '@heroicons/react/24/outline'
 import { Input } from '../UI/Input'
 import { Label } from '../UI/Label'
-import { TextArea } from '../UI/TextArea'
 import { Button } from '../UI/Button'
+import { useContext, useState } from 'react'
+import { AuthContext } from '../../context/AuthContext'
+import { editProfile } from '../../services/profileService'
+import { Notification } from './Notification'
 
-export const EditProfile = ({toggleEditProfile}) => {
+export const EditProfile = ({toggleEditProfile,user}) => {
+  const {updateUserdata} = useContext(AuthContext);
+
+  const [formData,setFormData] = useState({
+    full_name : user.full_name,
+    username : user.username,
+    profile_photo : user.profile_photo ? user.profile_photo : null,
+  });
+  const [loading,setLoading] = useState(false);
+  const [message,setMessage] = useState("");
+  const [updated,setUpdated] = useState(null);
+
+  const handleChange = (e) =>{
+    const {name,value} = e.target;
+    setFormData((prevState) =>({
+      ...prevState,
+      [name] : value,
+    }));
+  }
+  
+  const handleSubmit = async (e) =>{
+    setUpdated(null);
+    e.preventDefault();
+    setLoading(true);
+    const response = await editProfile(formData);
+    setLoading(false);
+    if(response.data.updated){
+      setMessage(response.data.message);
+      setUpdated(true);
+      updateUserdata(response.data.user);
+    }else{
+      setMessage(response.data.message);
+      setUpdated(false);
+    }
+  }
+
+  console.log(localStorage.getItem("userData"));
+  
+
+  const handleImageChange = (e) =>{
+    setFormData({ ...formData, profile_photo: e.target.files[0] });
+  }
+  
   return (
     <div>
         <div
@@ -44,26 +88,32 @@ export const EditProfile = ({toggleEditProfile}) => {
               </div>
 
               <div className="p-4 md:p-5 space-y-4">
-                <form>
+                <form onSubmit={handleSubmit}>
                     <Label text={"Full name"} />
-                    <Input type={"text"} placeholder={"Soufian boukir"} name={"full_name"}/>
+                    <Input type={"text"} name={"full_name"} value={formData.full_name} onChange={handleChange}/>
                     <br></br>
                     <br></br>
                     <Label text={"Username"} />
-                    <Input type={"text"} placeholder={"sof1_boukir"} name={"username"}/>
+                    <Input type={"text"} name={"username"} value={formData.username} onChange={handleChange}/>
                     <br></br>
                     <br></br>
                     <Label text={"Email adress"} />
-                    <Input type={"email"} placeholder={"soufianeboukir0@gmail.com"} name={"email"}/>
+                    <Input type={"email"} placeholder={user.email} name={"email"} readOnly={true}/>
                     <br></br>
                     <br></br>
                     <Label text={"Change profile photo"} />
-                    <Input type={"file"} />
+                    <Input type={"file"} onChange={handleImageChange}/>
                     <div className='mt-3'>
-                      <Button text={"Save changes"} bg={"bg-blue-700"} />
+                      <Button text={"Save changes"} bg={"bg-blue-700"} loading={loading}/>
                     </div>
                 </form>
-              </div>              
+              </div>    
+              {
+                updated && <Notification message={message} kind={"success"}/>
+              }
+              {
+                updated === false && <Notification message={message} kind={"error"}/>
+              }          
             </div>
           </div>
         </div>

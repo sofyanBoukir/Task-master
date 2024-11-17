@@ -8,12 +8,13 @@ import { EditProfile } from "../UI/EditProfile";
 
 export const Profile = () => {
   
-  const {user,logout} = useContext(AuthContext);
+  const {logout} = useContext(AuthContext);
   const navigate = useNavigate();
   const [loading,setLoading] = useState(false);
+  const user = JSON.parse(localStorage.getItem("userData"));
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  
   const toggleEditProfile = () => {
       setIsModalOpen(!isModalOpen);
   };
@@ -27,7 +28,7 @@ export const Profile = () => {
     }, 3000);
   }
   return (
-    <div className="w-[20%] hidden lg:block fixed right-0 pt-2 bg-white h-screen px-4">
+    <div className="w-[20%] hidden lg:block fixed right-0 pt-2 bg-white h-screen px-4 z-20">
         <div className="flex items-center gap-2 bg-gray-200 rounded-lg p-2">
             <div>
                 <img className="w-14 h-14 rounded-full" src={image} alt="userImage"/>
@@ -57,7 +58,7 @@ export const Profile = () => {
           </div>
         </div>
         {
-          isModalOpen && <EditProfile toggleEditProfile={toggleEditProfile}/>
+          isModalOpen && <EditProfile user={user} toggleEditProfile={toggleEditProfile}/>
         }
         <div className="mt-3 bg-gray-200 rounded-lg p-2 flex flex-col justify-center items-center">
           <h1 className="text-lg font-semibold">Completed vs pending tasks</h1>
