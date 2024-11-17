@@ -18,7 +18,10 @@ export const Login = () => {
     const [loading,setLoading] = useState(false);
     const [success,setSuccess] = useState(false);
     const [invalidData,setInvalidData] = useState(false);
-    const {register} = useContext(AuthContext);
+    const {register,isLoggedOut} = useContext(AuthContext);
+
+    console.log(isLoggedOut);
+    
 
     const handleChange = (e) =>{
         const {name,value} = e.target;
@@ -28,7 +31,7 @@ export const Login = () => {
             [name]: value,
         }));
     }
-
+    
     const handleSubmit = async (e) =>{
         setInvalidData(false);
         e.preventDefault();
@@ -49,7 +52,11 @@ export const Login = () => {
     <div className="lg:w-[35%] w-[90%] mx-auto px-10 py-5 text-center shadow-md rounded-md bg-white border-black mt-20">
         <h1 className="text-xl font-semibold">Login to your account</h1>
         <span className="mt-2 text-gray-500 text-sm font-semibold">Login now. Don't have an account? <Link className="text-blue-700" to={"/Register"}>Sign up</Link></span>
-
+        {
+            isLoggedOut && <div className="bg-green-200 border border-green-800 rounded-md p-4 mt-2">
+                <span className="text-green-900 text-lg font-semibold">You have been logged out!</span>
+            </div>
+        }
         <div className="flex justify-start mt-5">
             <form className="w-[100%]" onSubmit={handleSubmit}>
                 <div className="flex flex-col gap-5">
