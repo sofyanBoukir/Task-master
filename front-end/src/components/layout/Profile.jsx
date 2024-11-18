@@ -1,5 +1,5 @@
 import { InboxStackIcon, RectangleStackIcon } from "@heroicons/react/24/outline";
-import image from "../../../public/defaultImage.png";
+import defaultImage from "../../../public/defaultImage.png";
 import { Button } from "../UI/Button";
 import { useContext, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
@@ -31,7 +31,7 @@ export const Profile = () => {
     <div className="w-[20%] hidden lg:block fixed right-0 pt-2 bg-white h-screen px-4 z-20">
         <div className="flex items-center gap-2 bg-gray-200 rounded-lg p-2">
             <div>
-                <img className="w-14 h-14 rounded-full" src={image} alt="userImage"/>
+                <img className="w-14 h-14 rounded-full" src={user.profile_photo ? user.profile_photo : defaultImage} alt="userImage"/>
             </div>
             <div>
                 <span className="font-semibold text-sm">Hello,</span>

@@ -15,6 +15,11 @@ class User extends Authenticatable implements JWTSubject
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    public function getProfilePhotoAttribute($value){
+        return $value ? asset('storage/images/users/'.$value) : 
+        asset('storage/images/users/defaultImage.png');
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

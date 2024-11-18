@@ -7,13 +7,14 @@ import { editProfile } from '../../services/profileService'
 import { Notification } from './Notification'
 
 export const EditProfile = ({toggleEditProfile,user}) => {
-  const {updateUserdata} = useContext(AuthContext);
+  const {updateUser} = useContext(AuthContext);
 
   const [formData,setFormData] = useState({
     full_name : user.full_name,
     username : user.username,
     profile_photo : user.profile_photo ? user.profile_photo : null,
   });
+  
   const [loading,setLoading] = useState(false);
   const [message,setMessage] = useState("");
   const [updated,setUpdated] = useState(null);
@@ -32,17 +33,17 @@ export const EditProfile = ({toggleEditProfile,user}) => {
     setLoading(true);
     const response = await editProfile(formData);
     setLoading(false);
+    console.log(response);
+    
     if(response.data.updated){
       setMessage(response.data.message);
       setUpdated(true);
-      updateUserdata(response.data.user);
+      updateUser(response.data.user)
     }else{
       setMessage(response.data.message);
       setUpdated(false);
     }
   }
-
-  console.log(localStorage.getItem("userData"));
   
 
   const handleImageChange = (e) =>{
@@ -102,9 +103,9 @@ export const EditProfile = ({toggleEditProfile,user}) => {
                     <br></br>
                     <br></br>
                     <Label text={"Change profile photo"} />
-                    <Input type={"file"} onChange={handleImageChange}/>
+                    <Input type={"file"} required={false} onChange={handleImageChange}/>
                     <div className='mt-3'>
-                      <Button text={"Save changes"} bg={"bg-blue-700"} loading={loading}/>
+                      <Button text={"Save changes"} type={"submit"} bg={"bg-blue-700"} loading={loading}/>
                     </div>
                 </form>
               </div>    

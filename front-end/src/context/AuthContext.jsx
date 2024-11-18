@@ -1,4 +1,5 @@
 import { createContext, useState } from "react"
+import { userLogout } from "../services/authService";
 
 export const AuthContext = createContext();
 export const AuthProvider = ({children}) => {
@@ -9,7 +10,7 @@ export const AuthProvider = ({children}) => {
       return localStorage.getItem('userData') ? JSON.parse(localStorage.getItem("userData")) : null;
     });
     
-    const updateUserData = (userData) =>{
+    const updateUser = (userData) =>{      
       localStorage.removeItem("userData");
       localStorage.setItem("userData",JSON.stringify(userData));
       setUser(userData)
@@ -19,14 +20,17 @@ export const AuthProvider = ({children}) => {
       localStorage.setItem("userData", JSON.stringify(userData));      
     }
 
-    const logout = () =>{
-      setUser(null);
-      setIsLoggedOut(true);
-      localStorage.clear();
+    const logout = async () =>{
+      const response = await userLogout();
+      if(response.data.loggedOut){
+        setUser(null);
+        setIsLoggedOut(true);
+        localStorage.clear();
+      }
     }
 
   return (
-    <AuthContext.Provider value={{user,register,logout,isLoggedOut,updateUserData}}>
+    <AuthContext.Provider value={{user,register,logout,isLoggedOut,updateUser}}>
         {children}
     </AuthContext.Provider>
   )

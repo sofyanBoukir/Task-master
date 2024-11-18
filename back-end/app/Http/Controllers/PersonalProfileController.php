@@ -15,11 +15,16 @@ class PersonalProfileController extends Controller
             $username = $request->username;
 
             $user = JWTAuth::parseToken()->authenticate();
-            $usernameExists = User::where("username",$user->username)->where("id","!=",$user->id)->first();
+            $usernameExists = User::where("username",$request->username)->where("id","!=",$user->id)->exists();
+            return response()->json([
+                "user id" => $user->id,
+                "isUsernameExists" => $usernameExists,
+            ]);
+
             if($usernameExists){
                 return response()->json([
                     "updated" => false,
-                    "message" => "This username already exist!",
+                    "message" => "This username is already exists!",
                 ]);
             }
 

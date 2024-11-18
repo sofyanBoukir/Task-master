@@ -30,6 +30,13 @@ class AuthController extends Controller
         ]);
     }
 
+    public function logout(Request $request){
+        JWTAuth::invalidate(JWTAuth::getToken());
+        return response()->json([
+            "loggedOut" => true,
+        ]);
+    }
+
     public function sendVerificationCode(Request $request){
         $email = $request->email;
         $verification_code = rand(100000,999999);
