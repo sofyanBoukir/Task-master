@@ -12,9 +12,9 @@ export const EditProfile = ({toggleEditProfile,user}) => {
   const [formData,setFormData] = useState({
     full_name : user.full_name,
     username : user.username,
-    profile_photo : user.profile_photo ? user.profile_photo : null,
   });
   
+  const [profilePhoto,setProfilePhoto] = useState(null);
   const [loading,setLoading] = useState(false);
   const [message,setMessage] = useState("");
   const [updated,setUpdated] = useState(null);
@@ -31,7 +31,13 @@ export const EditProfile = ({toggleEditProfile,user}) => {
     setUpdated(null);
     e.preventDefault();
     setLoading(true);
-    const response = await editProfile(formData,localStorage.getItem("token"));
+    let profileData = new FormData();
+    profileData.append("full_name",formData.full_name);
+    profileData.append("username",formData.username);
+    if(profilePhoto !== null){
+      profileData.append("profile_photo",profilePhoto);
+    }
+    const response = await editProfile(profileData,localStorage.getItem("token"));
     setLoading(false);
     
     if(response.data.updated){
@@ -46,7 +52,7 @@ export const EditProfile = ({toggleEditProfile,user}) => {
   
 
   const handleImageChange = (e) =>{
-    setFormData({ ...formData, profile_photo: e.target.files[0] });
+    setProfilePhoto(e.target.files[0]);
   }
   
   return (

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PersonalProfileController;
+use App\Http\Controllers\ProjectController;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
@@ -21,4 +22,8 @@ Route::prefix("auth")->group(function(){
 
 Route::prefix("profile")->group(function(){
     Route::post("/editProfile",[PersonalProfileController::class,"editProfile"]);
+});
+
+Route::prefix("project")->group(function(){
+    Route::post("/searchUsers",[ProjectController::class,"searchUsers"]);
 });
