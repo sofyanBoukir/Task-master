@@ -31,10 +31,11 @@ export const resetPassword = async (data) =>{
 export const userLogout = async () =>{
     const response = await axios.post("http://localhost:8000/api/auth/logout",{},
         {
-            headers:{
-                "Authorization" : `Bearer ${token}`,
+            headers :{
+                "Authorization" : `Bearer ${token}` 
             }
         }
     )
+    delete axios.defaults.headers.common['Authorization'];
     return response;
 }

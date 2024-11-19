@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
+use Tymon\JWTAuth\Claims\JwtId;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller
@@ -31,7 +32,9 @@ class AuthController extends Controller
     }
 
     public function logout(Request $request){
-        JWTAuth::invalidate(JWTAuth::getToken());
+        $token = JWTAuth::getToken();
+        JWTAuth::invalidate($token);
+        Auth::user();
         return response()->json([
             "loggedOut" => true,
         ]);

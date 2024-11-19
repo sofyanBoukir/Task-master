@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const token = localStorage.getItem("token");
-export const editProfile = async (data) =>{
+export const editProfile = async (data,token) =>{
     const response = await axios.post("http://localhost:8000/api/profile/editProfile",data,
         {
             headers:{

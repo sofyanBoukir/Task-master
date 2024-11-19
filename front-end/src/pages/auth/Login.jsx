@@ -35,10 +35,11 @@ export const Login = () => {
         setLoading(true);
         const response = await login(formData);
         setLoading(false);
+        
         if(!response.data.success){
             setInvalidData(true);
         }else{
-            setSuccess(true);
+            setSuccess(true);         
             localStorage.setItem("token",response.data.token);
             localStorage.setItem("isAuthenticated","true");
             localStorage.setItem("userData",JSON.stringify(response.data.user));

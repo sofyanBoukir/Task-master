@@ -27,6 +27,7 @@ export const AuthProvider = ({children}) => {
         setIsLoggedOut(true);
         localStorage.clear();
       }
+      return response;
     }
 
   return (

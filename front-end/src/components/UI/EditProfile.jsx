@@ -31,9 +31,8 @@ export const EditProfile = ({toggleEditProfile,user}) => {
     setUpdated(null);
     e.preventDefault();
     setLoading(true);
-    const response = await editProfile(formData);
+    const response = await editProfile(formData,localStorage.getItem("token"));
     setLoading(false);
-    console.log(response);
     
     if(response.data.updated){
       setMessage(response.data.message);

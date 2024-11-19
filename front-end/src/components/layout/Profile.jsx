@@ -19,13 +19,15 @@ export const Profile = () => {
       setIsModalOpen(!isModalOpen);
   };
 
-  const userLogout = () =>{
+  const userLogout = async () =>{
     setLoading(true);
-    setTimeout(() => {
-      logout();
-      setLoading(false);
+    const response = await logout();
+    
+    
+    setLoading(false);
+    if(response.data.loggedOut){
       navigate("/");
-    }, 3000);
+    }
   }
   return (
     <div className="w-[20%] hidden lg:block fixed right-0 pt-2 bg-white h-screen px-4 z-20">
