@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ProjectUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
@@ -27,5 +28,11 @@ class ProjectController extends Controller
                 "message" => "No users founded!",
             ]);
         }
+    }
+
+    public function addProject(Request $request){
+        $user = JWTAuth::parseToken()->authenticate();
+
+        
     }
 }

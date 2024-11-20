@@ -14,10 +14,11 @@ export const AddProject = ({toggleAddProject}) => {
     description:"",
     members:[],
   });
-
   const [users,setUsers] = useState([]);
   const [usernameValue,setUsernameValue] = useState('');
   const [loading,setLoading] = useState(false);
+  const [messsage,setMessage] = useState('');
+  const [searchedUsers,setSearchedUsers] = useState([]);
 
   const hanldeChange = (e) =>{
     const {name,value} = e.target;
@@ -33,14 +34,43 @@ export const AddProject = ({toggleAddProject}) => {
     setLoading(true);
     const response = await searchUsers(data,localStorage.getItem("token"));
     setLoading(false);
-    console.log(response);
-    setUsers(response.data.users.data);
+
+    if(response.data.noUsers){
+      setUsers([]);
+      setMessage("No users founded!");
+    }else{
+      setUsers(response.data.users.data);
+      setMessage("");
+    }
   }
 
   useEffect(() =>{
-    getSearchedUsers();
+    if(usernameValue !== ''){
+      getSearchedUsers();
+    }
   },[usernameValue])
 
+  const addUsers = (username,id) =>{
+    if(searchedUsers.some(user => user.username === username)){
+      return;
+    }    
+    setSearchedUsers([...searchedUsers,{
+      username : username,
+      id : id,
+    }]);
+    setFormData((prevState)=>({
+      ...prevState,
+      members: [...(prevState.members || []),id],
+    }))
+  }
+
+  const deleteSearchedUser = (index,id) =>{
+    setSearchedUsers(searchedUsers.filter((user,i) => i !== index))
+    setFormData((prevState)=>({
+      ...prevState,
+      members : prevState.members.filter((member) => id !== member)
+    }))
+  }
   return (
     <div>
         <div
@@ -93,11 +123,20 @@ export const AddProject = ({toggleAddProject}) => {
                       <Input type={"text"} value={usernameValue} onChange={(e) => setUsernameValue(e.target.value)} name={"search"} placeholder={"Search by username"} />
                     </div>
                     <div className='flex mt-2 gap-2 flex-wrap'>
-                      <div className='rounded-3xl border-2 border-gray-500 px-2 flex items-center hover:bg-gray-200 cursor-pointer duration-150 ease-in-out'>
-                        <div>
-                          <span className='font-semibold text-md text-gray-500'>soufian</span>
-                        </div>
-                      </div>
+                      {
+                        searchedUsers && searchedUsers.length ? 
+                        searchedUsers.map((user,index) =>{ return <>
+                          <div key={index} className='rounded-3xl bg-blue-700 px-2 py-1 border-2 border-black cursor-pointer hover:bg-blue-600 duration-150 ease-in'
+                           onClick={() => deleteSearchedUser(index,user.id)}>
+                            <div>
+                              <span className='font-semibold text-md text-white'>{user.username}</span>
+                            </div>
+                          </div>
+                        </>
+                          
+                        })
+                        : null
+                      }
                     </div>
                     {
                       loading && <LinearProgress />
@@ -107,13 +146,16 @@ export const AddProject = ({toggleAddProject}) => {
                         users && users.length ? 
                           users.map((user) =>{
                             return <>
-                               <div className='flex justify-between'>
+                               <div className='flex justify-between mt-2 border border-black px-2 py-1 rounded-sm hover:bg-gray-300 duration-150 ease-in cursor-pointer bg-gray-200'>
                                   <span className='text-gray-500 font-semibold'>{user.username}</span>
-                                  <PlusCircleIcon className='w-5 h-5 text-gray-600 cursor-pointer'/>
+                                  <PlusCircleIcon className='w-5 h-5 text-gray-700 cursor-pointer' onClick={() => addUsers(user.username,user.id)}/>
                                 </div>
                             </>
                           })
-                        : "No users found"
+                        : null
+                      }
+                      {
+                        messsage && <span className='font-semibold text-lg'>No users founded!</span>
                       }
                     </div>
                     <div className='mt-3'>
