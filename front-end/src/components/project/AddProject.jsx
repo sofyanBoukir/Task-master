@@ -4,8 +4,9 @@ import { Label } from '../UI/Label'
 import { TextArea } from '../UI/TextArea'
 import { Button } from '../UI/Button'
 import { useEffect, useState } from 'react'
-import { searchUsers } from '../../services/projectService'
-import { LinearProgress } from '@mui/material'
+import { addProject, searchUsers } from '../../services/projectService'
+import { LinearLoading } from '../UI/LinearLoading'
+import { Notification } from '../UI/Notification'
 
 export const AddProject = ({toggleAddProject}) => {
 
@@ -17,8 +18,10 @@ export const AddProject = ({toggleAddProject}) => {
   const [users,setUsers] = useState([]);
   const [usernameValue,setUsernameValue] = useState('');
   const [loading,setLoading] = useState(false);
+  const [buttonLoading,setButtonLoading] = useState(false);
   const [messsage,setMessage] = useState('');
   const [searchedUsers,setSearchedUsers] = useState([]);
+  const [projectCreated,setProjectCreated] = useState(false);
 
   const hanldeChange = (e) =>{
     const {name,value} = e.target;
@@ -71,6 +74,19 @@ export const AddProject = ({toggleAddProject}) => {
       members : prevState.members.filter((member) => id !== member)
     }))
   }
+
+  const handleSubmit = async (e) =>{
+    setProjectCreated(null);
+    e.preventDefault();
+    setButtonLoading(true);
+    const response = await addProject(formData,localStorage.getItem("token"));
+    setButtonLoading(false);
+    if(response.data.created){
+      setProjectCreated(true);
+    }else{
+      setProjectCreated(false);
+    }
+  }
   return (
     <div>
         <div
@@ -110,7 +126,7 @@ export const AddProject = ({toggleAddProject}) => {
               </div>
 
               <div className="p-4 md:p-5 space-y-4">
-                <form>
+                <form onSubmit={handleSubmit}>
                     <Label text={"Project title"} />
                     <Input type={"text"} value={formData.title} onChange={hanldeChange} placeholder={"Ex: Edutrack project"} name={"title"}/>
                     <br></br>
@@ -120,7 +136,7 @@ export const AddProject = ({toggleAddProject}) => {
                     <br></br>
                     <div>
                       <Label text={"Add members"} />
-                      <Input type={"text"} value={usernameValue} onChange={(e) => setUsernameValue(e.target.value)} name={"search"} placeholder={"Search by username"} />
+                      <Input type={"text"} required={false} value={usernameValue} onChange={(e) => setUsernameValue(e.target.value)} name={"search"} placeholder={"Search by username"} />
                     </div>
                     <div className='flex mt-2 gap-2 flex-wrap'>
                       {
@@ -139,7 +155,7 @@ export const AddProject = ({toggleAddProject}) => {
                       }
                     </div>
                     {
-                      loading && <LinearProgress />
+                      loading && <LinearLoading />
                     }
                     <div className='mt-2'>
                       {
@@ -157,9 +173,12 @@ export const AddProject = ({toggleAddProject}) => {
                       {
                         messsage && <span className='font-semibold text-lg'>No users founded!</span>
                       }
+                      {
+                        projectCreated && <Notification kind={"success"} message={"A new project created successfully!"}/>
+                      }
                     </div>
                     <div className='mt-3'>
-                      <Button text={"Create Project"} bg={"bg-blue-700"} />
+                      <Button text={"Create Project"} bg={"bg-blue-700"} loading={buttonLoading}/>
                     </div>
                 </form>
               </div>              

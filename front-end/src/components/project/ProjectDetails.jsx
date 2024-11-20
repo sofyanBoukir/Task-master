@@ -3,8 +3,14 @@ import { Input } from '../UI/Input'
 import { Label } from '../UI/Label'
 import { TextArea } from '../UI/TextArea'
 import { Button } from '../UI/Button'
+import { useState } from 'react'
 
-export const ProjectDetails = ({toggleEditProject}) => {
+export const ProjectDetails = ({project,toggleEditProject}) => {
+
+  const [formData,setFormData] = useState({
+    title : project.title,
+    description : project.description,
+  });
   return (
     <div>
         <div
@@ -13,7 +19,7 @@ export const ProjectDetails = ({toggleEditProject}) => {
           aria-modal="true"
           aria-labelledby="modal-title"
         >
-          <div className="relative p-4 w-[100%] md:w-[40%] max-w-2xl max-h-full">
+          <div className="relative p-4 w-[100%] md:w-[70%] max-w-2xl max-h-full">
             <div className="relative bg-white text-black rounded-md">
               <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
                 <h3 className="text-xl font-semibold text-gray-900" id="modal-title">
@@ -46,15 +52,15 @@ export const ProjectDetails = ({toggleEditProject}) => {
               <div className="p-4 md:p-5 space-y-4">
                 <form>
                     <Label text={"Project title"} />
-                    <Input type={"text"} placeholder={"Ex: Edutrack project"} name={"title"}/>
+                    <Input type={"text"} value={formData.title} placeholder={"Ex: Edutrack project"} name={"title"}/>
                     <br></br>
                     <br></br>
                     <Label text={"Project description"} />
-                    <TextArea name={"description"} placeholder={"Ex: EduTrack is a modern and user-friendly school management system designed to streamline...." }/>
+                    <TextArea name={"description"} value={formData.description} placeholder={"Ex: EduTrack is a modern and user-friendly school management system designed to streamline...." }/>
                     <br></br>
                     <div>
                       <Label text={"Add users"} />
-                      <Input type={"text"} name={"search"} placeholder={"Search by username"} />
+                      <Input type={"text"} name={"search"} required={false} placeholder={"Search by username"} />
                     </div>
                     <div className='flex mt-2 gap-2 flex-wrap'>
                       <div className='rounded-3xl border-2 border-gray-500 px-2 flex items-center hover:bg-gray-200 cursor-pointer duration-150 ease-in-out'>

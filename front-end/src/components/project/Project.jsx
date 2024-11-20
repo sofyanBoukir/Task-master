@@ -1,8 +1,9 @@
 import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { ProjectDetails } from "./ProjectDetails";
+import moment from "moment";
 
-export const Project = () => {
+export const Project = ({project}) => {
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -10,15 +11,19 @@ export const Project = () => {
         setIsModalOpen(!isModalOpen);
     };
 
+    const formatDate = (date) =>{
+        return moment(date).fromNow();
+    }
+
     return ( 
     <div className="relative w-full lg:w-[21%] bg-white rounded-md p-3 h-52 cursor-pointer hover:bg-gray-200 duration-150 ease-in">
-        <h1 className="text-xl font-semibold">This is the project title</h1>
+        <h1 className="text-xl font-semibold">{project.title}</h1>
         <h3 className="text-sm text-gray-600 font-semibold">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit debitis eaque ad fugit voluptatibus molestiae molestias soluta cupiditate obcaecati iusto!
+        {project.description.substr(0,100)}...
         </h3>
         <div className="absolute flex justify-between items-center bottom-2 left-3 right-3">
         <div>
-            <span className="text-gray-500 font-semibold text-sm">Yesterday</span>
+            <span className="text-gray-500 font-semibold text-sm">{formatDate(project.created_at)}</span>
         </div>
         <div className="flex gap-1">
             <div onClick={() => toggleEditProject()}>
@@ -28,7 +33,7 @@ export const Project = () => {
         </div>
         </div>
         {
-            isModalOpen && <ProjectDetails toggleEditProject={toggleEditProject}/>
+            isModalOpen && <ProjectDetails project={project} toggleEditProject={toggleEditProject}/>
         }
     </div>
   )
