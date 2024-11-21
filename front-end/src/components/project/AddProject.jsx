@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { addProject, searchUsers } from '../../services/projectService'
 import { LinearLoading } from '../UI/LinearLoading'
 import { Notification } from '../UI/Notification'
+import { NormalNotification } from '../UI/NormalNotification'
 
 export const AddProject = ({toggleAddProject}) => {
 
@@ -22,6 +23,7 @@ export const AddProject = ({toggleAddProject}) => {
   const [messsage,setMessage] = useState('');
   const [searchedUsers,setSearchedUsers] = useState([]);
   const [projectCreated,setProjectCreated] = useState(false);
+  const [userExistError,setUserExistError] = useState(false);
 
   const hanldeChange = (e) =>{
     const {name,value} = e.target;
@@ -54,7 +56,9 @@ export const AddProject = ({toggleAddProject}) => {
   },[usernameValue])
 
   const addUsers = (username,id) =>{
+    setUserExistError(false);
     if(searchedUsers.some(user => user.username === username)){
+      setUserExistError(true);      
       return;
     }    
     setSearchedUsers([...searchedUsers,{
@@ -169,6 +173,9 @@ export const AddProject = ({toggleAddProject}) => {
                             </>
                           })
                         : null
+                      }
+                      {
+                        userExistError && <NormalNotification message={"Already exist!"} />
                       }
                       {
                         messsage && <span className='font-semibold text-lg'>No users founded!</span>

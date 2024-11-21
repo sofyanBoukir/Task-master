@@ -30,3 +30,8 @@ export const addProject = async (data,token) =>{
     );
     return response;
 }
+
+export const getProjectMembers = async (id) =>{
+    const response = await axios.get(`http://localhost:8000/api/project/getProjectDetails/${id}`);
+    return response;
+}

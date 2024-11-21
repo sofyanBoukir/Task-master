@@ -28,5 +28,5 @@ Route::prefix("project")->group(function(){
     Route::post("/searchUsers",[ProjectController::class,"searchUsers"]);
     Route::post("/addProject",[ProjectController::class,"addProject"]);
     Route::get("/getProjects",[ProjectController::class,"getProjects"]);
-    Route::get("/getProjectDetails",[ProjectController::class,"getProjectDetails"]);
+    Route::get("/getProjectDetails/{id}",[ProjectController::class,"getProjectDetails"]);
 });

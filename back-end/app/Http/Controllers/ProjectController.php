@@ -91,8 +91,8 @@ class ProjectController extends Controller
         }
     }
 
-    public function getProjectDetails(Request $request){
-        $members = ProjectUser::where("project_id",$request->projectId)
+    public function getProjectDetails($id){
+        $members = ProjectUser::where("project_id",$id)
                                 ->with("user")
                                 ->get()
                                 ->map(function($member){
@@ -104,6 +104,7 @@ class ProjectController extends Controller
 
         if(count($members) !== 0){
             return response()->json([
+                "found" => true,
                 "members" => $members,
             ]);
         }else{
