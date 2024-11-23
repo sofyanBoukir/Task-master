@@ -99,6 +99,7 @@ class ProjectController extends Controller
                                     return [
                                         "username" => $member->user->username,
                                         "role" => $member->role,
+                                        "id" => $member->user->id,
                                     ];
                                 });
 
@@ -167,7 +168,7 @@ class ProjectController extends Controller
 
             $user = JWTAuth::parseToken()->authenticate();
             Project::where("id",$id)->where("created_by",$user->id)->delete();
-            
+
             return response()->json([
                 "deleted" => true,
             ]);
