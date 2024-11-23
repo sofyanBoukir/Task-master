@@ -13,7 +13,7 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ProjectController extends Controller
 {
-    public function SearchUsers(Request $request){
+    public function searchUsers(Request $request){
         $user = JWTAuth::parseToken()->authenticate();
 
         $users = User::SELECT("id","username")
@@ -102,15 +102,63 @@ class ProjectController extends Controller
                                     ];
                                 });
 
+        $onlyIds = ProjectUser::where("project_id",$id)
+                                ->with("user")
+                                ->get()
+                                ->pluck("user.id");
+
         if(count($members) !== 0){
             return response()->json([
                 "found" => true,
                 "members" => $members,
+                "onlyIds" => $onlyIds,
             ]);
         }else{
             return response()->json([
                 "not Found" => true,
             ],401);
+        }
+    }
+
+    public function updateProject(Request $request){
+        $project = Project::find($request->projectId);
+        $project->title = $request->title;
+        $project->description = $request->description;
+        $project->save();
+
+        try{
+            $request->validate([
+                "members" => "required|array",
+                "members.*" => "integer|exists:users,id",
+            ]);
+
+            $existingUsers = ProjectUser::where("project_id",$request->projectId)->pluck("user_id")->toArray();
+            $usersToAdd = array_diff($request->members,$existingUsers);
+            $usersToRemove = array_diff($existingUsers,$request->members);
+
+            foreach($usersToAdd as $userId){
+                ProjectUser::create([
+                    "project_id" => $request->projectId,
+                    "user_id" => $userId,
+                    "role" => "member",
+                ]);
+            }
+
+            ProjectUser::where("project_id",$request->projectId)
+                        ->whereIn("user_id",$usersToRemove)
+                        ->delete();
+
+            return response()->json([
+                "updated" => true,
+                "message" => "Data updated successfully!",
+                "project" => $project,
+            ]);
+
+        }catch(Exception $e){
+            return response()->json([
+                "updated" => false,
+                "message" => $e->getMessage(),
+            ]);
         }
     }
 }

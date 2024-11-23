@@ -35,3 +35,8 @@ export const getProjectMembers = async (id) =>{
     const response = await axios.get(`http://localhost:8000/api/project/getProjectDetails/${id}`);
     return response;
 }
+
+export const updateProject = async (data) =>{
+    const response = await axios.put(`http://localhost:8000/api/project/updateProject`,data);
+    return response;
+}

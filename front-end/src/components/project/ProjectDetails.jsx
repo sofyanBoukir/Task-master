@@ -4,16 +4,13 @@ import { Label } from '../UI/Label'
 import { TextArea } from '../UI/TextArea'
 import { Button } from '../UI/Button'
 import { useEffect, useState } from 'react'
-import { getProjectMembers, searchUsers } from '../../services/projectService'
+import { getProjectMembers, searchUsers, updateProject } from '../../services/projectService'
 import { LinearLoading } from '../UI/LinearLoading'
 import { NormalNotification } from '../UI/NormalNotification'
+import { Notification } from '../UI/Notification'
 
 export const ProjectDetails = ({project,toggleEditProject}) => {
 
-  const [formData,setFormData] = useState({
-    title : project.title,
-    description : project.description,
-  });
   const [loading,setLoading] = useState(false);
   const [members,setMembers] = useState([]);
   const [usernameValue,setUsernameValue] = useState('');
@@ -21,6 +18,31 @@ export const ProjectDetails = ({project,toggleEditProject}) => {
   const [searchLoading,setSearchLoading] = useState(false);
   const [users,setUsers] = useState([]);
   const [userExistError,setUserExistError] = useState(false);
+  const [newMembers,setnewMembers] = useState([]); 
+  const [buttonLoading,setButtonLoading] = useState(false);
+  const [updated,setUpdated] = useState(null);
+
+  const [formData,setFormData] = useState({
+    title : project.title,
+    description : project.description,
+    members : newMembers,
+    projectId : project.id,
+  });
+
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      members: newMembers,
+    }));
+  }, [newMembers]);
+
+  const handleChange = (e) =>{
+    const {name,value} = e.target;
+    setFormData((prevState)=>({
+      ...prevState,
+      [name] : value,
+    }));
+  }
 
   const getSearchedUsers = async () =>{
     const data = new FormData();    
@@ -44,20 +66,39 @@ export const ProjectDetails = ({project,toggleEditProject}) => {
     setLoading(false)
     if(response.data.found){
       setMembers(response.data.members);
+      setnewMembers(response.data.onlyIds);
     }
   }
 
   const addMembers = (username,id) =>{
     setUserExistError(false);
+
     if(members.some(user => user.username === username)){
       setUserExistError(true);
       return;
     }
+    
+    setnewMembers([...newMembers,id]);
+
     setMembers([...members,{
         id : id,
         username : username,
       }
     ]);
+  }
+
+  const deleteMembers = (role,id,index,username) =>{
+    if(role === 'owner'){
+      return;
+    }
+
+    setMembers(members.filter((user,i) => i !== index))
+    setnewMembers(newMembers.filter((user,i) => i !== index));
+
+    setFormData((prevState)=>({
+      ...prevState,
+      members : prevState.members.filter((member) => id !== member)
+    }));
   }
 
   useEffect(() =>{
@@ -69,6 +110,20 @@ export const ProjectDetails = ({project,toggleEditProject}) => {
   useEffect(() =>{
     getProjectDetails();
   },[]);
+
+  const handleSubmit = async (e) =>{
+    e.preventDefault();
+    setUpdated(null);
+    setButtonLoading(true);
+    const response = await updateProject(formData);
+    setButtonLoading(false);
+    if(response.data.updated){
+      setUpdated(true);
+    }else{
+      setUpdated(false);
+      setMessage(response.data.message);
+    }
+  }
 
   return (
     <div>
@@ -109,13 +164,13 @@ export const ProjectDetails = ({project,toggleEditProject}) => {
               </div>
 
               <div className="p-4 md:p-5 space-y-4">
-                <form>
+                <form onSubmit={handleSubmit}>
                     <Label text={"Project title"} />
-                    <Input type={"text"} value={formData.title} placeholder={"Ex: Edutrack project"} name={"title"}/>
+                    <Input type={"text"} value={formData.title} name={"title"} onChange={handleChange} placeholder={"Ex: Edutrack project"}/>
                     <br></br>
                     <br></br>
                     <Label text={"Project description"} />
-                    <TextArea name={"description"} value={formData.description} placeholder={"Ex: EduTrack is a modern and user-friendly school management system designed to streamline...." }/>
+                    <TextArea name={"description"} onChange={handleChange} value={formData.description} />
                     <br></br>
                     <div>
                       <Label text={"Add users"} />
@@ -128,7 +183,7 @@ export const ProjectDetails = ({project,toggleEditProject}) => {
                       {
                         members && members.length ? 
                         members.map((member,index) =>{ return <>
-                          <div key={index} className={`rounded-3xl ${member.role === 'owner' ? 'bg-green-700 hover:bg-green-600' : 'bg-blue-700'} px-2 py-1 border-2 border-black cursor-pointer hover:bg-blue-600 duration-150 ease-in`}>
+                          <div onClick={() => deleteMembers(member.role,member.id,index,member.username)} key={index} className={`rounded-3xl ${member.role === 'owner' ? 'bg-green-700 hover:bg-green-600' : 'bg-blue-700'} px-2 py-1 border-2 border-black cursor-pointer hover:bg-blue-600 duration-150 ease-in`}>
                             <div>
                               <span className='font-semibold text-md text-white'>{member.username} | {member.role ? member.role : 'member'}</span>
                             </div>
@@ -158,11 +213,17 @@ export const ProjectDetails = ({project,toggleEditProject}) => {
                         : null
                       }
                       {
+                        updated && <Notification message={"Project info updated sucessfully!"} kind={"success"}/>
+                      }
+                      {
+                        updated === false && <Notification message={message} kind={"error"} />
+                      }
+                      {
                         message && <span className='font-semibold text-lg'>No users founded!</span>
                       }
                     </div>
                     <div className='mt-3'>
-                      <Button text={"Save changes"} bg={"bg-blue-700"} />
+                      <Button text={"Save changes"} loading={buttonLoading} bg={"bg-blue-700"} />
                     </div>
                 </form>
               </div>              
