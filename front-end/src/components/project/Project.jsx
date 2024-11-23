@@ -2,13 +2,19 @@ import { TrashIcon, PencilSquareIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { ProjectDetails } from "./ProjectDetails";
 import moment from "moment";
+import { DeleteProject } from "./DeleteProject";
 
 export const Project = ({project}) => {
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [isDeleteModalOpen,setIsDeleteModalOpen] = useState(false);
 
     const toggleEditProject = () => {
-        setIsModalOpen(!isModalOpen);
+        setIsEditModalOpen(!isEditModalOpen);
+    };
+
+    const toggleDeleteProject = () => {
+        setIsDeleteModalOpen(!isDeleteModalOpen);
     };
 
     const formatDate = (date) =>{
@@ -29,11 +35,16 @@ export const Project = ({project}) => {
             <div onClick={() => toggleEditProject()}>
                 <PencilSquareIcon className="w-6 h-6 text-blue-500 hover:text-blue-800 duration-150 ease-in-out" />
             </div>
-            <TrashIcon className="w-6 h-6 text-red-500 hover:text-red-800 duration-150 ease-in-out"/>
+            <div onClick={() => toggleDeleteProject()}>
+                <TrashIcon className="w-6 h-6 text-red-500 hover:text-red-800 duration-150 ease-in-out"/>
+            </div>
         </div>
         </div>
         {
-            isModalOpen && <ProjectDetails project={project} toggleEditProject={toggleEditProject}/>
+            isEditModalOpen && <ProjectDetails project={project} toggleEditProject={toggleEditProject}/>
+        }
+        {
+            isDeleteModalOpen && <DeleteProject project={project} toggleDeleteProject={toggleDeleteProject}/>
         }
     </div>
   )

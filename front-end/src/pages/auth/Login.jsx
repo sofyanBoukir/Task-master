@@ -1,4 +1,4 @@
-import { json, Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Label } from "../../components/UI/Label"
 import { Input } from "../../components/UI/input"
 import { Button } from "../../components/UI/Button"

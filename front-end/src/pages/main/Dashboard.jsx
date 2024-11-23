@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react"
-import { AuthContext } from "../../context/AuthContext"
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import { SideBar } from "../../components/layout/SideBar";
 import { Header } from "../../components/layout/Header";
 import { Profile } from "../../components/layout/Profile";
@@ -15,7 +15,7 @@ export const Dashboard = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading,setLoading] = useState(false);
   const [projects,setProjects] = useState([]);
-
+  
   const toggleAddProject = () => {
     setIsModalOpen(!isModalOpen);
   };
@@ -30,11 +30,9 @@ export const Dashboard = () => {
     }
   } 
 
-  
-
   useEffect(() => {
     getProjectsData();
-  },[])
+  },[]);
   return (
     <div className="flex">
       <SideBar />
@@ -51,13 +49,12 @@ export const Dashboard = () => {
             {
               projects && projects.length ?
                 projects.map((project) =>{ return <>
-                  <Project project={project} />
+                  <Project project={project}/>
                 </> 
                 })
               : null
             }
           <Add text={"Project"} onclick={() =>toggleAddProject()}/>
-           
           </div>
           {isModalOpen && (
             <AddProject toggleAddProject={toggleAddProject}/>

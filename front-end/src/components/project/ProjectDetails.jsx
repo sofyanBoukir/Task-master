@@ -79,7 +79,6 @@ export const ProjectDetails = ({project,toggleEditProject}) => {
     }
     
     setnewMembers([...newMembers,id]);
-
     setMembers([...members,{
         id : id,
         username : username,

@@ -161,4 +161,21 @@ class ProjectController extends Controller
             ]);
         }
     }
+
+    public function deleteProject($id){
+        try{
+
+            $user = JWTAuth::parseToken()->authenticate();
+            Project::where("id",$id)->where("created_by",$user->id)->delete();
+            
+            return response()->json([
+                "deleted" => true,
+            ]);
+        }catch(Exception $e){
+            return response()->json([
+                "deleted" => false,
+                "message" => $e->getMessage(),
+            ]);
+        }
+    }
 }

@@ -30,4 +30,5 @@ Route::prefix("project")->group(function(){
     Route::get("/getProjects",[ProjectController::class,"getProjects"]);
     Route::get("/getProjectDetails/{id}",[ProjectController::class,"getProjectDetails"]);
     Route::put("/updateProject",[ProjectController::class,"updateProject"]);
+    Route::delete("/deleteProject/{id}",[ProjectController::class,"deleteProject"]);
 });
