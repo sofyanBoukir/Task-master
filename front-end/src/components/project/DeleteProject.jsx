@@ -16,7 +16,6 @@ export const DeleteProject = ({project,toggleDeleteProject}) => {
     setLoading(true);
     const response = await deleteProject(project.id,localStorage.getItem("token"));
     setLoading(false);
-    console.log(response);
     
     if(response.data.deleted){
       setDeleted(true);

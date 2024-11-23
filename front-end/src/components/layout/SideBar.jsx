@@ -1,4 +1,5 @@
 import { BookmarkIcon, ClipboardDocumentIcon,DocumentCheckIcon,
+   PencilSquareIcon,
    Squares2X2Icon, TrashIcon,
    UserCircleIcon} from "@heroicons/react/24/outline"
 import { useNavigate } from "react-router-dom"
@@ -12,6 +13,10 @@ export const SideBar = () => {
       <div>
         <Squares2X2Icon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/dashboard'? `text-blue-700`:null}`}
          onClick={() => navigate("/main/dashboard")}/>
+      </div>
+      <div>
+        <PencilSquareIcon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/addTasks'? `text-blue-700`:null}`}
+         onClick={() => navigate("/main/addTasks")}/>
       </div>
       <div>
         <ClipboardDocumentIcon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/tasks'? `text-blue-700`:null}`}

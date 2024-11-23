@@ -9,6 +9,7 @@ import { Tasks } from "./pages/main/Tasks"
 import { CompletedTasks } from "./pages/main/CompletedTasks"
 import { DeletedTasks } from "./pages/main/DeletedTasks"
 import { SavedTasks } from "./pages/main/SavedTasks"
+import { AddTasks } from "./pages/main/AddTasks"
 
 export const App = () => {
   return (
@@ -19,6 +20,7 @@ export const App = () => {
       <Route path="/password-reset/:token" element={<ResetPassword />} />
       <Route element={<ProtectedRoutes />}>
         <Route path="/main/dashboard" element={<Dashboard />}/>
+        <Route path="/main/addTasks" element={<AddTasks />} />
         <Route path="/main/tasks" element={<Tasks />} />
         <Route path="/main/completed" element={<CompletedTasks />} />
         <Route path="/main/deleted" element={<DeletedTasks />} />
