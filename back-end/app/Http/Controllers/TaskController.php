@@ -2,64 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use App\Models\Task;
+use Exception;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
+    public function addTask(Request $request){
+        try{
+            $request->validate([
+                "selectedUser" => "integer|exists:users,id",
+                "projectId" => "integer|exists:projects,id",
+            ]);
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+            Task::create([
+                "title" => $request->title,
+                "description" => $request->description,
+                "priority" => $request->priority,
+                "due_date" => $request->dueDate,
+                "project_id" => $request->projectId,
+                "assigned_to" => $request->selectedUser,
+            ]);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            return response()->json([
+                "added" => true,
+            ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Task $task)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Task $task)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Task $task)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Task $task)
-    {
-        //
+        }catch(Exception $e){
+            return response()->json([
+                "added" => false,
+                "message" => $e->getMessage(),
+            ]);
+        }
     }
 }
