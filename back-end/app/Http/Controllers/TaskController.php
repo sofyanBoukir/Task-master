@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Models\Task;
 use Exception;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TaskController extends Controller
 {
@@ -35,5 +36,19 @@ class TaskController extends Controller
                 "message" => $e->getMessage(),
             ]);
         }
+    }
+
+    public function getTasks(){
+        $user = JWTAuth::parsToken()->authenticate();
+
+        $tasks = Task::where("assigned_to",$user->id);
+        if(count($tasks) !== 0){
+            return response()->json([
+                "tasks" => $tasks,
+            ]);
+        }
+        return response()->json([
+            "noTasks" => true
+        ]);
     }
 }

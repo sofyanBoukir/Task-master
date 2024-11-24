@@ -72,7 +72,7 @@ class ProjectController extends Controller
 
         try{
             $user = JWTAuth::parseToken()->authenticate();
-            $projects = Project::where("created_by",$user->id)->get();
+            $projects = Project::where("created_by",$user->id)->latest()->get();
 
             if(count($projects) !== 0){
                 return response()->json([

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PersonalProfileController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\TaskController;
 
@@ -23,6 +24,7 @@ Route::prefix("auth")->group(function(){
 
 Route::prefix("profile")->group(function(){
     Route::post("/editProfile",[PersonalProfileController::class,"editProfile"]);
+    Route::get("/getProfileDetails",[PersonalProfileController::class,"getProfileDetails"]);
 });
 
 Route::prefix("project")->group(function(){

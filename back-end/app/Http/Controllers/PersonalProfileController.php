@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
+use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -44,11 +46,27 @@ class PersonalProfileController extends Controller
             "message" => "Your data updated successfully!",
             "user" => $user,
         ]);
-        
+
         return response()->json([
             "updated" => false,
             "message" => $ex->getMessage(),
         ]);
-        
-    }   
+    }
+
+    public function getProfileDetails(){
+
+        $user = JWTAuth::parseToken()->authenticate();
+        $projects = Project::where("created_by",$user->id)->count();
+        $tasks = Task::where("assigned_to",$user->id)->count();
+        $pendingTasks = Task::where("assigned_to",$user->id)
+                            ->where("status","pending")
+                            ->count();
+
+        return response()->json([
+            "totalProjects" => $projects,
+            "totalTasks" => $tasks,
+            "totalPendingTasks" => $pendingTasks,
+            "success" => true,
+        ]);
+    }
 }
