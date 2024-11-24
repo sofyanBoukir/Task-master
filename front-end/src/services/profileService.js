@@ -11,3 +11,12 @@ export const editProfile = async (data,token) =>{
     )
     return response;
 }   
+
+export const getProfileDetails = async (token) =>{
+    const response = await axios.get("http://localhost:8000/api/profile/getProfileDetails",{
+        headers:{
+            "Authorization" : `Bearer ${token}`
+        }
+    })
+    return response;
+}

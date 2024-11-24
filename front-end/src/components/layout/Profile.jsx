@@ -1,20 +1,42 @@
 import { InboxStackIcon, RectangleStackIcon } from "@heroicons/react/24/outline";
 import defaultImage from "../../../public/defaultImage.png";
 import { Button } from "../UI/Button";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { EditProfile } from "../UI/EditProfile";
+import { getProfileDetails } from "../../services/profileService";
+import { CircularProgress } from "@mui/material";
 
 export const Profile = () => {
   
   const {logout} = useContext(AuthContext);
   const navigate = useNavigate();
   const [loading,setLoading] = useState(false);
-  const user = JSON.parse(localStorage.getItem("userData"));
+  
+  const [totalProjects,setTotalProjects] = useState(0);
+  const [totalTasks,setTotalTasks] = useState(0);
+  const [totalPendingTasks,setTotalPendingTasks] = useState(0);
+  const [dataLoading,setDataLoading] = useState(false);
 
+  const user = JSON.parse(localStorage.getItem("userData"));
   const [isModalOpen, setIsModalOpen] = useState(false);
   
+  const getProfileData = async () =>{
+    setDataLoading(true);
+    const response = await getProfileDetails(localStorage.getItem("token"));
+    if(response.data.success){
+      setTotalProjects(response.data.totalProjects);
+      setTotalTasks(response.data.totalTasks);
+      setTotalPendingTasks(response.data.totalPendigTasks)
+      setDataLoading(false);
+    }
+  } 
+
+  useEffect(() =>{
+    getProfileData();
+  },[])
+
   const toggleEditProfile = () => {
       setIsModalOpen(!isModalOpen);
   };
@@ -46,14 +68,14 @@ export const Profile = () => {
         <div className="mt-2 flex flex-col gap-2">
           <div className="bg-gradient-to-r from-cyan-500 to-blue-500 px-3 py-2 rounded-md flex justify-between text-white items-center">
             <div>
-              <p className="font-semibold text-2xl">10</p>
+              <p className="font-semibold text-2xl">{dataLoading ? <CircularProgress size={"20px"} color="white"/> : totalTasks}</p>
               <span className="text-xl font-semibold">Total tasks</span>
             </div>
             <RectangleStackIcon className="w-12 h-10"/>
           </div>
           <div className="bg-gradient-to-r from-blue-500 to-blue-800 px-3 py-2 rounded-md flex justify-between text-white items-center">
             <div>
-              <p className="font-semibold text-2xl">10</p>
+              <p className="font-semibold text-2xl">{dataLoading ? <CircularProgress size={"20px"} color="white"/> : totalProjects}</p>
               <span className="text-xl font-semibold">Total projects</span>
             </div>
             <InboxStackIcon className="w-12 h-10"/>
@@ -73,7 +95,7 @@ export const Profile = () => {
             </svg>
 
             <div className="absolute top-1/2 start-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-              <span className="text-4xl font-bold text-blue-600 dark:text-blue-500">10</span>
+              <span className="text-4xl font-bold text-blue-600 dark:text-blue-500">{dataLoading ? <CircularProgress size={"20px"} color="white"/> : totalPendingTasks ? totalPendingTasks : "0"}</span>
               <span className="text-blue-600 dark:text-blue-500 block font-semibold">Pending</span>
             </div>
           </div>

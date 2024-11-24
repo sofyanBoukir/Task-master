@@ -39,11 +39,16 @@ class TaskController extends Controller
     }
 
     public function getTasks(){
-        $user = JWTAuth::parsToken()->authenticate();
+        $user = JWTAuth::parseToken()->authenticate();
 
-        $tasks = Task::where("assigned_to",$user->id);
+        $tasks = Task::SELECT(["description","title","due_date","priority","status"])
+                        ->where("assigned_to",$user->id)
+                        ->latest()
+                        ->get();
+
         if(count($tasks) !== 0){
             return response()->json([
+                "tasksExists" => true,
                 "tasks" => $tasks,
             ]);
         }

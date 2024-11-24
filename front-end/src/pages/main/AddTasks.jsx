@@ -10,7 +10,7 @@ export const AddTasks = () => {
 
     const [loading,setLoading] = useState(false);
     const [projects,setProjects] = useState([]);
-
+    
     const getProjectsData = async () =>{
         setLoading(true);
         const response = await getProjects(localStorage.getItem("token"));

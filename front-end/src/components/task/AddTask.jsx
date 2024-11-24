@@ -7,6 +7,7 @@ import { AuthContext } from "../../context/AuthContext"
 import { Button } from "../UI/Button"
 import { Notification } from "../UI/Notification"
 import { Input } from "../UI/Input"
+import { addTask } from "../../services/taskService"
 
 export const AddTask = ({toggleAddTask,project}) => {
 
@@ -14,8 +15,35 @@ export const AddTask = ({toggleAddTask,project}) => {
   const [loading,setLoading] = useState(false);
   const [userSelected,setUserSelected] = useState(null);
   const [assignError,setAssignError] = useState(false);
+  const [buttonLoading,setButtonLoading] = useState(false);
+  const [added,setAdded] = useState(null);
+  const [message,setMessage] = useState('');
+  const [formData,setFormData] = useState({
+    title : "",
+    description : "",
+    dueDate : "",
+    priority : "",
+    selectedUser : userSelected,
+    projectId : project.id,
+  })
 
-  const {user} = useContext(AuthContext);
+  useEffect(() =>{
+    setFormData((prevState)=>({
+      ...prevState,
+      selectedUser : userSelected,
+    }))
+  },[userSelected]);
+
+  const handleChange = (e) =>{
+    const {name,value} = e.target;
+    setFormData((prevState) =>({
+      ...prevState,
+      [name] : value,
+    }));
+  }
+
+  const user = JSON.parse(localStorage.getItem("userData"));  
+
   const getProjectDetails = async ()=>{
     setLoading(true);
     const response = await getProjectMembers(project.id);
@@ -29,13 +57,22 @@ export const AddTask = ({toggleAddTask,project}) => {
     getProjectDetails();
   },[])
 
-  const handleSubmit = (e) =>{
+  const handleSubmit = async (e) =>{
+    setAdded(null);
     e.preventDefault();
     if(userSelected === null){
       setAssignError(true);
       return;
     }
-
+    setButtonLoading(true);
+    const response = await addTask(formData);
+    setButtonLoading(false);
+    if(response.data.added){
+      setAdded(true);
+      return;
+    }
+    setAdded(false);
+    setMembers(response.data.message);
   }
   
   return (
@@ -79,15 +116,15 @@ export const AddTask = ({toggleAddTask,project}) => {
               <div className="p-4 md:p-5 space-y-4">
                 <form onSubmit={handleSubmit}>
                     <Label text={"Task title"} />
-                    <Input name={"title"} placeholder={"Task title"} type={"text"}/>
+                    <Input name={"title"} onChange={handleChange} placeholder={"Task title"} type={"text"}/>
                     <br></br>
                     <br></br>
                     <Label text={"Task due date"} />
-                    <Input name={"dueDate"} type={"date"}/>
+                    <Input name={"dueDate"} onChange={handleChange} type={"date"}/>
                     <br></br>
                     <br></br>
                     <Label text={"Task Priority"} />
-                    <select className="w-[100%] px-3 py-2 rounded-sm cursor-pointer border border-black bg-white" required>
+                    <select onChange={handleChange} name="priority" className="w-[100%] px-3 py-2 rounded-sm cursor-pointer border border-black bg-white" required>
                       <option value="">Select priority</option>
                       <option value="low">low</option>
                       <option value="medium">medium</option>
@@ -96,7 +133,7 @@ export const AddTask = ({toggleAddTask,project}) => {
                     <br></br>
                     <br></br>
                     <Label text={"Task description"} />
-                    <TextArea name={"description"} placeholder={"Task description"} size={200}/>
+                    <TextArea name={"description"} onChange={handleChange} placeholder={"Task description"} size={200}/>
                     <br></br>
                     <Label text={"Assign this task to"}/>
                     {
@@ -108,7 +145,7 @@ export const AddTask = ({toggleAddTask,project}) => {
                       {
                         members && members.length ?
                           members.map((member) =>{ return <>
-                            <div className={`${userSelected === member.id ? 'bg-black text-white':null} bg-white rounded-sm border border-black px-2 py-1 cursor-pointer`} onClick={() => setUserSelected(member.id)}>
+                            <div className={`${userSelected === member.id ? 'border text-blue-700 border-blue-700' : 'bg-white'} bg-white rounded-sm border border-black px-2 py-1 cursor-pointer`} onClick={() => setUserSelected(member.id)}>
                               <span>{member.username === user.username ? "Myself" : member.username}</span>
                             </div>
                           </>
@@ -116,12 +153,18 @@ export const AddTask = ({toggleAddTask,project}) => {
                       }
                     </div>
                     <br></br>
-                    <Button text={"Assign task"} bg={"bg-blue-700"}/>
+                    <Button loading={buttonLoading} text={"Assign task"} bg={"bg-blue-700"}/>
                 </form>
               </div>   
               {
                 assignError && <Notification message={"Please assign this task to someone!"} kind={"error"}/>
-              }           
+              }   
+              {
+                added && <Notification message={"New task assigned successfully!"} kind={"success"} />
+              }    
+              {
+                added === false && <Notification message={message} kind={"error"} />
+              }        
             </div>
           </div>
         </div>

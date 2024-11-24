@@ -136,7 +136,7 @@ export const AddProject = ({toggleAddProject}) => {
                     <br></br>
                     <br></br>
                     <Label text={"Project description"} />
-                    <TextArea name={"description"} onChange={hanldeChange} value={formData.description} placeholder={"Ex: EduTrack is a modern and user-friendly school management system designed to streamline...." }/>
+                    <TextArea name={"description"} size={"150"} onChange={hanldeChange} value={formData.description} placeholder={"Ex: EduTrack is a modern and user-friendly school management system designed to streamline...." }/>
                     <br></br>
                     <div>
                       <Label text={"Add members"} />
