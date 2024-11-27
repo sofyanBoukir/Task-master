@@ -41,7 +41,7 @@ class TaskController extends Controller
     public function getTasks(){
         $user = JWTAuth::parseToken()->authenticate();
 
-        $tasks = Task::SELECT(["description","title","due_date","priority","status"])
+        $tasks = Task::SELECT(["id","description","title","due_date","priority","status"])
                         ->where("assigned_to",$user->id)
                         ->latest()
                         ->get();
@@ -55,5 +55,25 @@ class TaskController extends Controller
         return response()->json([
             "noTasks" => true
         ]);
+    }
+
+    public function editTaskStatus(Request $request){
+        try {
+            $request->validate([
+                "status" => "string|required|in:in progess,completed",
+            ]);
+            $task = Task::find($request->id);
+            $task->status = $request->status;
+            $task->save();
+            return response()->json([
+                "updated" => true,
+            ]);
+
+        } catch (Exception $e) {
+            return response()->json([
+                "updated" => false,
+                "message" => $e->getMessage(),
+            ]);
+        }
     }
 }
