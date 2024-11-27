@@ -13,3 +13,8 @@ export const getTasks = async (token) =>{
     })
     return response;
 }
+
+export const editTaskStatus = async (data) =>{
+    const response = await axios.patch(`http://localhost:8000/api/task/editTaskStatus`,{data});
+    return response;
+}
