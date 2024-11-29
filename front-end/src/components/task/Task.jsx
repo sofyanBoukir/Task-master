@@ -1,36 +1,41 @@
 import { StarIcon, CheckCircleIcon, ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { editTaskStatus } from "../../services/taskService";
 import { CircularProgress } from "@mui/material";
+import { Notification } from "../UI/Notification";
 
 export const Task = ({task}) => {
 
     const [status,setStatus] = useState(null);
     const [loading,setLoading] = useState(false);
+    const [message,setMessage] = useState(null);
+
+    const editTask = async () =>{
+        const formData = new FormData();
+        formData.append("status",status);
+        formData.append("id",task.id);     
+        console.log(formData);
+
+        setLoading(true);        
+        const response = await editTaskStatus(formData);
+        console.log(response);
+        
+        setLoading(false);
+        if(!response.data.updated){
+            setMessage(response.data.message);
+        }
+        return response;
+    }
 
     const handleCompletedTask = () =>{
         setStatus("completed");
+        editTask();
     }
 
     const handleInProgressTask = () =>{
         setStatus("in progress");
+        editTask();
     }
-    
-    const editTask = async () =>{
-        let formData = new FormData();
-        formData.append("status",status);
-        formData.append("id",task.id);
-        setLoading(true);
-        const response = await editTaskStatus(formData);
-        setLoading(false);
-        return response;
-    }
-    
-    useEffect(() =>{
-        if(status !== null){
-            editTask();        
-        }
-    },[status]);
 
     return ( 
     <div className={`relative ${loading?"flex":null} justify-center items-center w-full lg:w-[21%] bg-white rounded-md p-3 h-52 cursor-pointer hover:bg-gray-200 duration-150 ease-in`}>
@@ -63,6 +68,9 @@ export const Task = ({task}) => {
                         <CircularProgress color="blue" size={"40px"} />
                     </div>
                 </div>
+        }
+        {
+            message && <Notification message={message} kind={"error"}/>
         }
     </div>
   )
