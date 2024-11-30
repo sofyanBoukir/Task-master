@@ -59,18 +59,16 @@ class TaskController extends Controller
 
     public function editTaskStatus(Request $request){
         try {
-            // $request->validate([
-            //     "status" => "string|required|in:in progess,completed",
-            // ]);
-            return response()->json([
-                "task status" => $request->status,
-                "task id" => $request->id,
+            $request->validate([
+                "status" => "string|required|in:in progress,completed",
             ]);
+
             $task = Task::find($request->id);
             $task->status = $request->status;
             $task->save();
             return response()->json([
                 "updated" => true,
+                "task" => $task,
             ]);
 
         } catch (Exception $e) {
