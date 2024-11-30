@@ -1,8 +1,10 @@
-import { StarIcon, CheckCircleIcon, ArrowTrendingUpIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, ArrowTrendingUpIcon, BookmarkIcon, BookmarkSlashIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { editTaskStatus } from "../../services/taskService";
 import { CircularProgress } from "@mui/material";
 import { Notification } from "../UI/Notification";
+import { useDispatch } from "react-redux";
+import { handleUnsave, saveNewTask } from "../../redux/action/actions";
 
 export const Task = ({task}) => {
 
@@ -11,7 +13,11 @@ export const Task = ({task}) => {
     const [saved,setSaved] = useState(false);
     const [taskData,setTaskData] = useState(task);
     const [alreadySaved,setAlreadySaved] = useState(false);
+    const isOnSavedPage = window.location.pathname === '/main/saved';    
+    const taskAlreadySaved = JSON.parse(localStorage.getItem("tasks")).some((savedTask) => savedTask.id === task.id); 
+    const dispatch = useDispatch();
 
+    
     const editTask = async (status) =>{
         var formData = {
             status : status,
@@ -49,14 +55,13 @@ export const Task = ({task}) => {
             }, 2000);
             return;
         }        
-        savedTasks.unshift(newTask);
-        localStorage.setItem('tasks',JSON.stringify(savedTasks));
+        dispatch(saveNewTask(newTask));
         setSaved(true);
         setTimeout(() => {
             setSaved(false);
         }, 2000);
     }
-    
+
     return ( 
     <div className={`relative ${loading?"flex":null} justify-center items-center w-full lg:w-[21%] bg-white rounded-md p-3 h-52 cursor-pointer hover:bg-gray-200 duration-150 ease-in`}>
         {
@@ -76,7 +81,12 @@ export const Task = ({task}) => {
                             <span className="text-gray-500 font-semibold text-sm">{taskData.priority}</span>
                         </div>
                         <div className="flex gap-1">
-                            <StarIcon className="w-6 h-6 text-gray-400 duration-150 ease-in-out hover:text-yellow-900" onClick={() => saveTask(taskData)}/>
+                            {
+                                isOnSavedPage ?
+                                    <BookmarkSlashIcon className="w-6 h-6 text-gray-400 duration-150 ease-in-out hover:text-yellow-900" onClick={() => dispatch(handleUnsave(taskData.id))}/>
+                                :
+                                    <BookmarkIcon className={`w-6 h-6 ${taskAlreadySaved ? 'text-gray-800' : null} text-gray-400 duration-150 ease-in-out hover:text-yellow-900`} onClick={() => saveTask(taskData)}/>
+                            } 
                             <CheckCircleIcon className={`w-6 h-6 text-green-300 hover:text-green-900 ${taskData.status === 'completed'? 'text-green-800' :null} duration-150 ease-in-out`} onClick={() => handleCompletedTask()}/>
                             <ArrowTrendingUpIcon className={`w-6 h-6 text-blue-300 hover:text-blue-900 ${taskData.status === 'in progress'? 'text-blue-800' :null} duration-150 ease-in-out`} onClick={() => handleInProgressTask()}/>
                         </div>

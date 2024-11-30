@@ -1,27 +1,33 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Header } from "../../components/layout/Header"
 import { Profile } from "../../components/layout/Profile"
 import { SideBar } from "../../components/layout/SideBar"
 import { Task } from "../../components/task/Task"
 import { LinearLoading } from "../../components/UI/LinearLoading"
+import { useSelector } from "react-redux"
 
 export const SavedTasks = () => {
   const [loading,setLoading] = useState(false);
-  const [savedTasks,setSavedTasks] = useState([]);
+  // const [savedTasks,setSavedTasks] = useState(useSelector(data=>data));
 
-  const getSavedTasks = () =>{
-    setLoading(true);
-    const tasks = JSON.parse(localStorage.getItem("tasks"));
-    setLoading(false);
-    if(tasks){
-      setSavedTasks(tasks);
-      return;
-    }
-  }
+  const savedTasks = useSelector(state=>state)
+  console.log(savedTasks);
+  console.log(JSON.parse(localStorage.getItem("tasks")));
+  
+  
+  // const getSavedTasks = () =>{
+  //   setLoading(true);
+  //   const tasks = ;
+  //   setLoading(false);
+  //   if(tasks){
+  //     setSavedTasks(tasks);
+  //     return;
+  //   }
+  // }
 
-  useEffect(() =>{
-    getSavedTasks();
-  },[])
+  // useEffect(() =>{
+  //   getSavedTasks();
+  // },[])
 
   return (
     <div className="flex">
