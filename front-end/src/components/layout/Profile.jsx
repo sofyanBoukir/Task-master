@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { EditProfile } from "../UI/EditProfile";
 import { getProfileDetails } from "../../services/profileService";
 import { CircularProgress } from "@mui/material";
+import { useDispatch } from "react-redux";
 
 export const Profile = () => {
   
@@ -18,7 +19,8 @@ export const Profile = () => {
   const [totalTasks,setTotalTasks] = useState(0);
   const [totalPendingTasks,setTotalPendingTasks] = useState(0);
   const [dataLoading,setDataLoading] = useState(false);
-  
+  const dispatch = useDispatch();
+
   const user = JSON.parse(localStorage.getItem("userData"));
   const [isModalOpen, setIsModalOpen] = useState(false);
   
@@ -48,6 +50,7 @@ export const Profile = () => {
     
     setLoading(false);
     if(response.data.loggedOut){
+      dispatch({type:"LOGOUT"})
       navigate("/");
     }
   }

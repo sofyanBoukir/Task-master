@@ -5,11 +5,11 @@ import { SideBar } from "../../components/layout/SideBar"
 import { LinearLoading } from "../../components/UI/LinearLoading"
 import { useDispatch, useSelector } from "react-redux"
 import { fetchProjects } from "../../redux/action/projectsActions"
+import { ProjectUserWith } from "../../components/project/ProjectUserWith"
 
 export const ProjectsWith = () => {
     const dispatch = useDispatch();
-
-  const { projects, loading, error } = useSelector((state) => state.projects);
+    const { projects, loading, error } = useSelector((state) => state.projects);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -33,16 +33,16 @@ export const ProjectsWith = () => {
             </div>
           }
           <div className="flex gap-4 mt-5 flex-wrap">
-            {/* {
-              savedTasks && savedTasks.length ?
-              savedTasks.map((task) =>{
-                  return <Task task={task}/>
+            {
+              projects && projects.length ?
+              projects.map((project) =>{
+                  return <ProjectUserWith project={project}/>
                 })
               :null
             }
             {
-              loading === false && savedTasks.length === 0 && <span className="text-xl">No tasks saved!</span>
-            } */}
+              error && <span className="text-xl">{error}</span>
+            }
           </div>
         </div>
       </div>

@@ -58,3 +58,12 @@ export const getProjectsUserWith = async (token) =>{
     });
     return response;
 }
+
+export const exitProject = async (token,projectId) =>{
+    const response = await axios.delete(`http://localhost:8000/api/project/exitProject/${projectId}`,{
+        headers:{
+            "Authorization" : `Bearer ${token}`
+        }
+    });
+    return response;
+}

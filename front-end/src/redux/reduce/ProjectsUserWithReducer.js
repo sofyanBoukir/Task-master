@@ -14,7 +14,16 @@ export const ProjectsUserWithReducer = (state=initialState,action) =>{
 
         case "REQUEST_SENDED_WITH_ERROR":
             return {...state,loading:false,error:action.payload}
-                
+            
+        case "EXIT_PROJECT":
+            return {...state,projects:action.payload}
+        
+        case "DELETING":
+            return {...state}
+
+        case "LOGOUT":
+            return initialState;
+
         default:
             return state;
     }

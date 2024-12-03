@@ -6,7 +6,7 @@ import { useSelector } from "react-redux"
 
 export const SavedTasks = () => {
   const savedTasks = useSelector((state) => state.savedTasks);  
-
+  
   return (
     <div className="flex">
       <SideBar />
