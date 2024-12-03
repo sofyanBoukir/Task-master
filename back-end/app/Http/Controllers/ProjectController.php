@@ -179,4 +179,29 @@ class ProjectController extends Controller
             ]);
         }
     }
+
+    public function getProjectsUserWith(Request $request){
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            $projects = ProjectUser::where("user_id",$user->id)
+                                    ->where("role","member")
+                                    ->with(['project.creator'])
+                                    ->get();
+            if(count($projects) > 0){
+                return response()->json([
+                    "projectsExists" => true,
+                    "projects" => $projects,
+                ]);
+            }else{
+                return response()->json([
+                    "message" => "No projects you are with!",
+                ]);
+            }
+
+        } catch (Exception $e) {
+            return response()->json([
+                "message" => $e->getMessage(),
+            ]);
+        }
+    }
 }
