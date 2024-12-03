@@ -8,26 +8,7 @@ import { useSelector } from "react-redux"
 
 export const SavedTasks = () => {
   const [loading,setLoading] = useState(false);
-  // const [savedTasks,setSavedTasks] = useState(useSelector(data=>data));
-
-  const savedTasks = useSelector(state=>state)
-  console.log(savedTasks);
-  console.log(JSON.parse(localStorage.getItem("tasks")));
-  
-  
-  // const getSavedTasks = () =>{
-  //   setLoading(true);
-  //   const tasks = ;
-  //   setLoading(false);
-  //   if(tasks){
-  //     setSavedTasks(tasks);
-  //     return;
-  //   }
-  // }
-
-  // useEffect(() =>{
-  //   getSavedTasks();
-  // },[])
+  const savedTasks = useSelector(state => state);  
 
   return (
     <div className="flex">

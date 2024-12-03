@@ -1,4 +1,4 @@
-const savedTasks = JSON.parse(localStorage.getItem("tasks"));
+const savedTasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
 export const TaskReducer = (state=savedTasks,action) =>{
     switch(action.type){

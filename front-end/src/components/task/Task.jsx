@@ -14,9 +14,10 @@ export const Task = ({task}) => {
     const [taskData,setTaskData] = useState(task);
     const [alreadySaved,setAlreadySaved] = useState(false);
     const isOnSavedPage = window.location.pathname === '/main/saved';    
-    const taskAlreadySaved = JSON.parse(localStorage.getItem("tasks")).some((savedTask) => savedTask.id === task.id); 
+    const taskAlreadySaved = (JSON.parse(localStorage.getItem("tasks")) || []).some(
+        (savedTask) => savedTask.id === task.id
+      );
     const dispatch = useDispatch();
-
     
     const editTask = async (status) =>{
         var formData = {
@@ -83,7 +84,7 @@ export const Task = ({task}) => {
                         <div className="flex gap-1">
                             {
                                 isOnSavedPage ?
-                                    <BookmarkSlashIcon className="w-6 h-6 text-gray-400 duration-150 ease-in-out hover:text-yellow-900" onClick={() => dispatch(handleUnsave(taskData.id))}/>
+                                    <BookmarkSlashIcon className="w-6 h-6 text-gray-400 duration-150 ease-in-out hover:text-yellow-900" onClick={() => dispatch(handleUnsave(task.id))}/>
                                 :
                                     <BookmarkIcon className={`w-6 h-6 ${taskAlreadySaved ? 'text-gray-800' : null} text-gray-400 duration-150 ease-in-out hover:text-yellow-900`} onClick={() => saveTask(taskData)}/>
                             } 
