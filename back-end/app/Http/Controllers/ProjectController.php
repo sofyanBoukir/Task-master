@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use App\Models\ProjectUser;
+use App\Models\Task;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -185,8 +186,9 @@ class ProjectController extends Controller
             $user = JWTAuth::parseToken()->authenticate();
             $projects = ProjectUser::where("user_id",$user->id)
                                     ->where("role","member")
-                                    ->with(['project.creator'])
+                                    ->with(['project.creator','project.members'])
                                     ->get();
+
             if(count($projects) > 0){
                 return response()->json([
                     "projectsExists" => true,
@@ -199,6 +201,26 @@ class ProjectController extends Controller
             }
 
         } catch (Exception $e) {
+            return response()->json([
+                "message" => $e->getMessage(),
+            ]);
+        }
+    }
+
+    public function exitProject($projectId){
+        try{
+            $user = JWTAuth::parseToken()->authenticate();
+            $project = ProjectUser::where("user_id",$user->id)
+                                    ->where("project_id",$projectId);
+            $tasks = Task::where("project_id",$projectId);
+            
+            $tasks->delete();
+            $project->delete();
+            return response()->json([
+                "exited" => true,
+            ]);
+
+        }catch(Exception $e){
             return response()->json([
                 "message" => $e->getMessage(),
             ]);

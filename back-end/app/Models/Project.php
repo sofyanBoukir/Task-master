@@ -17,4 +17,8 @@ class Project extends Model
     public function creator(){
         return $this->belongsTo(User::class,"created_by");
     }
+
+    public function members(){
+        return $this->hasMany(ProjectUser::class)->with("user");
+    }
 }
