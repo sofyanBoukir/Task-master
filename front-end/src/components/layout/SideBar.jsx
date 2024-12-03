@@ -1,5 +1,6 @@
 import { BookmarkIcon, ClipboardDocumentIcon,DocumentCheckIcon,
    PencilSquareIcon,
+   RectangleStackIcon,
    Squares2X2Icon, TrashIcon,
    UserCircleIcon} from "@heroicons/react/24/outline"
 import { useNavigate } from "react-router-dom"
@@ -27,12 +28,14 @@ export const SideBar = () => {
          onClick={() => navigate("/main/completed")}/>
       </div>
       <div>
+        <RectangleStackIcon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/projectsWith'? `text-blue-700`:null}`}
+         onClick={() => navigate("/main/projectsWith")}/>
+      </div>
+      <div>
         <TrashIcon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/deleted'? `text-blue-700`:null}`}
          onClick={() => navigate("/main/deleted")}/>
       </div>
-      <div className="block lg:hidden">
-        <UserCircleIcon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/profile'? `text-blue-700`:null}`}/>
-      </div>
+      
       <div>
         <BookmarkIcon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/saved'? `text-blue-700`:null}`}
          onClick={() => navigate("/main/saved")}/>

@@ -4,7 +4,7 @@ import { editTaskStatus } from "../../services/taskService";
 import { CircularProgress } from "@mui/material";
 import { Notification } from "../UI/Notification";
 import { useDispatch } from "react-redux";
-import { handleUnsave, saveNewTask } from "../../redux/action/actions";
+import { handleUnsave, saveNewTask } from "../../redux/action/taskActions";
 
 export const Task = ({task}) => {
 

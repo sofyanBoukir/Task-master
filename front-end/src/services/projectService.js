@@ -49,3 +49,12 @@ export const deleteProject = async (id,token) =>{
     });
     return response;
 }
+
+export const getProjectsUserWith = async (token) =>{
+    const response = await axios.get("http://localhost:8000/api/project/projectsUserWith",{
+        headers : {
+            "Authorization" : `Bearer ${token}`
+        }
+    });
+    return response;
+}

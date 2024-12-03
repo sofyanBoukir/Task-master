@@ -1,14 +1,11 @@
-import { useState } from "react"
 import { Header } from "../../components/layout/Header"
 import { Profile } from "../../components/layout/Profile"
 import { SideBar } from "../../components/layout/SideBar"
 import { Task } from "../../components/task/Task"
-import { LinearLoading } from "../../components/UI/LinearLoading"
 import { useSelector } from "react-redux"
 
 export const SavedTasks = () => {
-  const [loading,setLoading] = useState(false);
-  const savedTasks = useSelector(state => state);  
+  const savedTasks = useSelector((state) => state.savedTasks);  
 
   return (
     <div className="flex">
@@ -19,11 +16,6 @@ export const SavedTasks = () => {
           <div>
             <h1 className="text-2xl font-semibold">Your Saved tasks</h1>
           </div>
-          {
-            loading && <div className="mt-2">
-              <LinearLoading />
-            </div>
-          }
           <div className="flex gap-4 mt-5 flex-wrap">
             {
               savedTasks && savedTasks.length ?
@@ -33,7 +25,7 @@ export const SavedTasks = () => {
               :null
             }
             {
-              loading === false && savedTasks.length === 0 && <span className="text-xl">No tasks saved!</span>
+              savedTasks.length === 0 && <span className="text-xl">No tasks saved!</span>
             }
           </div>
         </div>
