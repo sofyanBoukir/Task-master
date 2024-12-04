@@ -1,10 +1,11 @@
-import { CheckCircleIcon, ArrowTrendingUpIcon, BookmarkIcon, BookmarkSlashIcon } from "@heroicons/react/24/outline";
+import { CheckCircleIcon, ArrowTrendingUpIcon, BookmarkIcon, BookmarkSlashIcon, InformationCircleIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { editTaskStatus } from "../../services/taskService";
 import { CircularProgress } from "@mui/material";
 import { Notification } from "../UI/Notification";
 import { useDispatch } from "react-redux";
 import { handleUnsave, saveNewTask } from "../../redux/action/taskActions";
+import { TaskDetails } from "./TaskDetails";
 
 export const Task = ({task}) => {
 
@@ -18,7 +19,12 @@ export const Task = ({task}) => {
         (savedTask) => savedTask.id === task.id
       );
     const dispatch = useDispatch();
-    
+    const [isTaskDetailsModalOpen,setIsTaskDetailsModalOpen] = useState(false);
+
+    const toggleTAskDetails = () => {
+        setIsTaskDetailsModalOpen(!isTaskDetailsModalOpen);
+    };
+
     const editTask = async (status) =>{
         var formData = {
             status : status,
@@ -75,11 +81,8 @@ export const Task = ({task}) => {
                         </h3>
                     </div>
                     <div className="absolute flex justify-between items-center bottom-2 left-3 right-3">
-                        <div>
-                            <span className="text-gray-500 font-semibold text-sm">{taskData.due_date}</span>
-                        </div>
                         <div>   
-                            <span className="text-gray-500 font-semibold text-sm">{taskData.priority}</span>
+                            <span className="text-gray-800 font-semibold text-sm">{taskData.priority}</span>
                         </div>
                         <div className="flex gap-1">
                             {
@@ -90,6 +93,7 @@ export const Task = ({task}) => {
                             } 
                             <CheckCircleIcon className={`w-6 h-6 text-green-300 hover:text-green-900 ${taskData.status === 'completed'? 'text-green-800' :null} duration-150 ease-in-out`} onClick={() => handleCompletedTask()}/>
                             <ArrowTrendingUpIcon className={`w-6 h-6 text-blue-300 hover:text-blue-900 ${taskData.status === 'in progress'? 'text-blue-800' :null} duration-150 ease-in-out`} onClick={() => handleInProgressTask()}/>
+                            <InformationCircleIcon onClick={toggleTAskDetails} className="w-6 h-6 text-gray-600"/>
                         </div>
                     </div>
                 </>
@@ -108,6 +112,9 @@ export const Task = ({task}) => {
         }
         {
             alreadySaved && <Notification message={"Task already saved!"} kind={"error"}/>
+        }
+        {
+            isTaskDetailsModalOpen && <TaskDetails toggleTAskDetails={toggleTAskDetails} task={task}/>
         }
     </div>
   )
