@@ -1,4 +1,4 @@
-import { BookmarkIcon, ClipboardDocumentIcon,DocumentCheckIcon,
+import { ArrowUpOnSquareStackIcon, BookmarkIcon, ClipboardDocumentIcon,DocumentCheckIcon,
    PencilSquareIcon,
    RectangleStackIcon,
    Squares2X2Icon, TrashIcon,
@@ -24,18 +24,13 @@ export const SideBar = () => {
          onClick={() => navigate("/main/tasks")}/>
       </div>
       <div>
-        <DocumentCheckIcon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/completed'? `text-blue-700`:null}`}
-         onClick={() => navigate("/main/completed")}/>
+        <ArrowUpOnSquareStackIcon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/assignedTasks'? `text-blue-700`:null}`}
+         onClick={() => navigate("/main/assignedTasks")}/>
       </div>
       <div>
         <RectangleStackIcon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/projectsWith'? `text-blue-700`:null}`}
          onClick={() => navigate("/main/projectsWith")}/>
       </div>
-      <div>
-        <TrashIcon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/deleted'? `text-blue-700`:null}`}
-         onClick={() => navigate("/main/deleted")}/>
-      </div>
-      
       <div>
         <BookmarkIcon className={`w-7 h-7 cursor-pointer hover:text-blue-700 ${path === '/main/saved'? `text-blue-700`:null}`}
          onClick={() => navigate("/main/saved")}/>
