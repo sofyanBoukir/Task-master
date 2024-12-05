@@ -3,7 +3,7 @@ import { Profile } from "../../components/layout/Profile"
 import { SideBar } from "../../components/layout/SideBar"
 import { AssignedTask } from "../../components/task/AssignedTask"
 
-export const AssignedTasks = () => {
+export const AssignedTasks = () => {  
   return (
     <div className="flex">
       <SideBar />

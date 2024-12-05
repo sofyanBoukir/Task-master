@@ -42,4 +42,5 @@ Route::prefix("task")->group(function(){
     Route::post("/addTask",[TaskController::class,"addTask"]);
     Route::get("/getTasks",[TaskController::class,"getTasks"]);
     Route::patch("/editTaskStatus",[TaskController::class,"editTaskStatus"]);
+    Route::get("/getAssignedTasks",[TaskController::class,"getAssignedTasks"]);
 });

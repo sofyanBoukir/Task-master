@@ -15,6 +15,10 @@ class Task extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+    public function assignedUser(){
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
+
     /** @use HasFactory<\Database\Factories\TaskFactory> */
     use HasFactory;
 }
