@@ -81,14 +81,14 @@ class TaskController extends Controller
 
     public function getAssignedTasks(){
         $user = JWTAuth::parseToken()->authenticate();
-        $projects = Project::SELECT("id","title")
+        $assignedTasks = Project::SELECT("id","title")
                         ->where("created_by",$user->id)
                         ->with(["tasks" => function($query){
                             $query->with("assignedUser");
                         }])
                         ->get();
         return response()->json([
-            "projects" => $projects,
+            "assignedTasks" => $assignedTasks,
         ]);
     }
 }
