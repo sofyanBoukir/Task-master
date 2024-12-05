@@ -79,16 +79,24 @@ class TaskController extends Controller
         }
     }
 
-    public function getAssignedTasks(){
-        $user = JWTAuth::parseToken()->authenticate();
-        $assignedTasks = Project::SELECT("id","title")
-                        ->where("created_by",$user->id)
-                        ->with(["tasks" => function($query){
-                            $query->with("assignedUser");
-                        }])
-                        ->get();
-        return response()->json([
-            "assignedTasks" => $assignedTasks,
-        ]);
+    public function getAssignedTasks($projectId){
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            $assignedTasks = Task::where("project_id",$projectId)
+                            // ->where("created_by",$user->id)
+                            // ->with(["tasks" => function($query){
+                            //     $query->with("assignedUser");
+                            // }])
+                            ->with("assignedUser")
+                            ->get();
+            return response()->json([
+                "assignedTasks" => $assignedTasks,
+            ]);
+
+        } catch (Exception $ex) {
+            return response()->json([
+                "message" => $ex->getMessage(),
+            ]);
+        }
     }
 }
