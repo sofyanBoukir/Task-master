@@ -43,4 +43,5 @@ Route::prefix("task")->group(function(){
     Route::get("/getTasks",[TaskController::class,"getTasks"]);
     Route::patch("/editTaskStatus",[TaskController::class,"editTaskStatus"]);
     Route::get("/getAssignedTasks/{projectId}",[TaskController::class,"getAssignedTasks"]);
+    Route::delete("/deleteAssignedTask/{taskId}",[TaskController::class,"deleteAssignedTask"]);
 });

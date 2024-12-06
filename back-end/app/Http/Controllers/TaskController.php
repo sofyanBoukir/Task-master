@@ -81,18 +81,32 @@ class TaskController extends Controller
 
     public function getAssignedTasks($projectId){
         try {
-            $user = JWTAuth::parseToken()->authenticate();
             $assignedTasks = Task::where("project_id",$projectId)
-                            // ->where("created_by",$user->id)
-                            // ->with(["tasks" => function($query){
-                            //     $query->with("assignedUser");
-                            // }])
                             ->with("assignedUser")
                             ->get();
             return response()->json([
                 "assignedTasks" => $assignedTasks,
             ]);
 
+        } catch (Exception $ex) {
+            return response()->json([
+                "message" => $ex->getMessage(),
+            ]);
+        }
+    }
+
+    public function deleteAssignedTask($taskId){
+        try {
+            $user = JWTAuth::parseToken()->authenticate();
+            $task = Task::where("id",$taskId)->where("assigned_to",$user->id);
+
+            if($task){
+                $task->delete();
+                return response()->json([
+                    "deleted" => true,
+                    "message" => "Task deleted successfully!",
+                ]);
+            }
         } catch (Exception $ex) {
             return response()->json([
                 "message" => $ex->getMessage(),
