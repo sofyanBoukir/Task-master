@@ -77,7 +77,7 @@ export const Task = ({task}) => {
                     <div>
                         <h1 className="text-xl font-semibold">{task.title}</h1>
                         <h3 className="text-sm text-gray-600 font-semibold">
-                        {task.description}
+                        {task.description.substring(0,100)}...
                         </h3>
                     </div>
                     <div className="absolute flex justify-between items-center bottom-2 left-3 right-3">

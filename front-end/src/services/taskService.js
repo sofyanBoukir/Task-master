@@ -27,3 +27,12 @@ export const getAssignedTasks = async (token,projectId) =>{
     })
     return response;
 }
+
+export const deleteAssignedTask = async (token,taskId) =>{
+    const response = await axios.delete(`http://localhost:8000/api/task/deleteAssignedTask/${taskId}`,{
+        headers : {
+            "Authorization" : `Bearer ${token}`
+        }
+    })
+    return response;
+}

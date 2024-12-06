@@ -94,7 +94,7 @@ export const AddProject = ({toggleAddProject}) => {
   return (
     <div>
         <div
-          className="fixed inset-0 z-50 flex justify-center items-center w-full h-screen bg-gray-800 bg-opacity-50"
+          className="fixed inset-0 z-50 flex justify-center items-center w-full overflow-auto h-screen bg-gray-800 bg-opacity-50"
           role="dialog"
           aria-modal="true"
           aria-labelledby="modal-title"

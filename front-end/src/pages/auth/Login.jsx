@@ -30,6 +30,7 @@ export const Login = () => {
     }
     
     const handleSubmit = async (e) =>{
+        localStorage.clear();
         setInvalidData(false);
         e.preventDefault();
         setLoading(true);

@@ -46,8 +46,6 @@ export const AssignedTasks = () => {
         <Header />
         <div className="ml-16 w-[85%] p-3 mt-14">
           <h1 className="text-2xl font-semibold">Assigned tasks</h1>
-          <input type="text" placeholder="Search tasks" className="mt-2 px-2 py-1 rounded-md border w-[60%]" />
-          <br></br>
           <br></br>
           {
             projects && projects.length ? <select className="bg-white rounded-sm px-3 py-1 cursor-pointer" value={selectedProject} onChange={(e) => setSelectedProject(e.target.value)}>
@@ -70,7 +68,13 @@ export const AssignedTasks = () => {
                 assignedTasksData.map((assignedTask) =>{
                       return <AssignedTask assignedTask={assignedTask}/>
                 })
-              :<p className="text-xl font-semibold">No tasks assigned on this project!</p>
+              : null
+            }
+            {
+              assignedTasksData.length === 0 && selectedProject !== 0 && !loading && <p className="text-xl font-semibold">No tasks assigned on this project!</p>
+            }
+            {
+              projects.length === 0 && loading === false && <p className="text-xl font-semibold">You don't have any projects!</p>
             }
           </div>
         </div>

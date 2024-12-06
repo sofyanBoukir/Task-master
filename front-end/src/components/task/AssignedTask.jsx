@@ -1,6 +1,26 @@
 import { TrashIcon } from "@heroicons/react/24/outline"
-import image from "../../../public/defaultImage.png";
+import { useState } from "react"
+import { deleteAssignedTask } from "../../services/taskService";
+import { LinearLoading } from "../UI/LinearLoading";
+import { Notification } from "../UI/Notification";
+
 export const AssignedTask = ({assignedTask}) => {
+
+    const [loading,setLoading] = useState(false);
+    const [deleted,setDeleted] = useState(false);
+    const [message,setMessage] = useState('');
+
+    const deleteTask = async () =>{
+        setMessage('');
+        setLoading(true);
+        const response = await deleteAssignedTask(localStorage.getItem("token"),assignedTask.id);
+        setLoading(false);
+        if(response.data.deleted){
+            setDeleted(true);
+        }
+        setMessage("An error occured!");
+    }
+
   return (
     <div className="bg-white shadow-lg rounded-md px-5 py-4 w-[88%]">
         <div className="flex gap-2 items-center mb-3">
@@ -19,8 +39,18 @@ export const AssignedTask = ({assignedTask}) => {
         <div className="flex justify-between px-5 mt-2">
             <span className="text-md font-semibold">{assignedTask.priority}</span>
             <span className="text-md font-semibold">{assignedTask.status}</span>
-            <TrashIcon className="w-6 h-6 text-red-600 cursor-pointer"/>
+            <TrashIcon className="w-6 h-6 text-red-600 cursor-pointer" onClick={() => deleteTask()}/>
         </div>
+        <br></br>
+        {
+            loading && <LinearLoading />
+        }
+        {
+            deleted && <Notification message={"AssignedTask Deleted successfully!"} kind={"success"}/>
+        }
+        {
+            message && <Notification message={message} kind={"error"} /> 
+        }
     </div>
   )
 }
